@@ -301,11 +301,11 @@ class PlpViewModel @Inject constructor(
         }
     }
     private fun newSearch() {
-        page.value = 0
+        page.intValue = 0
         viewModelScope.launch {
             sessionUiState.emit(UIState.Loading)
             searchPlpUseCase.invoke(
-                page = page.value,
+                page = page.intValue,
                 filters = filterManager.getFiltersString()
             ).collect {
                 when (it) {

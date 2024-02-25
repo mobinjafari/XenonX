@@ -24,55 +24,32 @@ data class OldPlpRemote(
                     val landUseTypes : LandUseTypes = LandUseTypes.getLandUseTypeByNameFa(res?.attributes?.landuseType.toString())?:LandUseTypes.RESIDENTIAL
 
                     PlpItemResultModel(
-                        agencyName = res?.contactInfo?.name,
-                        agencyLogoUrl  = res?.contactInfo?.logoUrl,
-                        featured = res?.attributes?.featured,
-                        floorArea = res?.attributes?.floorArea?.toInt(),
+                        userFirstName = res?.contactInfo?.name,
+                        lastMessageText  = res?.contactInfo?.logoUrl,
+                        isPremiumUser = res?.attributes?.featured,
                         id = res?.identifier?.toInt()?:0,
-                        landUseType = landUseTypes,
-                        lastModifiedDate = res?.searchDate?.toString()?:"",
-                        listingType = listingType,
-                        numBeds = res?.attributes?.numOfBeds,
-                        numParkings = res?.attributes?.numberOfParking,
-                        priceOrDeposit = if (listingType==ListingType.SALE_AND_PRE_SALE) res?.pricing?.price?.toLong() else res?.pricing?.deposit?.toLong(),
-                        title = res?.title,
-                        unitPriceOrRent =  if (listingType==ListingType.SALE_AND_PRE_SALE) res?.pricing?.unitPrice?.toLong() else res?.pricing?.rent?.toLong(),
-                        agreedPrice = res?.pricing?.agreedPrice,
-                        coverPicture = res?.media?.imageUrls?.firstOrNull(),
-                        locationPhrase = res?.location?.locationName,
-                        searchDate = res?.searchDate
+                        lastTypingDate = res?.searchDate?.toString()?:"",
+                        numUnreadMessage = res?.attributes?.numOfBeds,
+                        userLastName = res?.title,
+                        smallProfileImage = res?.media?.imageUrls?.firstOrNull(),
+                        lastMessageDate = res?.searchDate?.toString()?:"",
+                        lastChatSeenDate = res?.searchDate?.toLong() ?:0,
+                        lastMessageStatus = res?.attributes?.listingType,
+                        lastMessageType = res?.attributes?.landuseType,
+                        hasStory = res?.attributes?.featured,
+
                     )
                 },
-                total = totalListings?:0,
+                total = totalListings?:1000,
             )
         }catch (e: Exception){
             e.printStackTrace()
-            return PlpResponseModel(
-                plpItemResultModel = content?.map { res ->
-                    PlpItemResultModel(
-                        agencyName = null,
-                        agencyLogoUrl  = null,
-                        featured = null,
-                        floorArea = null,
-                        id =  0,
-                        landUseType =  null,
-                        lastModifiedDate = null,
-                        listingType =  null,
-                        numBeds =  null,
-                        numParkings = null,
-                        priceOrDeposit = null,
-                        title =  null,
-                        unitPriceOrRent = null,
-                        agreedPrice =  null,
-                        coverPicture =  null,
-                        locationPhrase = null,
-                        searchDate = null
-                    )
-                },
-                total = totalListings?:0,
-            )
         }
 
+        return PlpResponseModel(
+            plpItemResultModel = emptyList(),
+            total = 0
+        )
     }
 
 }

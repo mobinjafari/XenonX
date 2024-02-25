@@ -347,28 +347,28 @@ fun PlpScreen(
                                 }
 
                             }
-                            PlpFilterPart(
-                                isDarkTheme = isDarkTheme,
-                                viewModel = viewModel,
-                                configuration = configuration,
-                                coroutineScope = coroutineScope,
-                                onFilterClick = {
-                                    keyboardController?.hide()
-                                    coroutineScope.launch {
-                                        viewModel.showBottomSheet(PlpBottomSheetType.FILTER)
-                                        viewModel.onHalfScreenBottomSheetOpened()
-                                        halfScreenBottomSheet.show()
-
-                                    }
-                                },
-                                onLocationSelectClick = {
-                                    keyboardController?.hide()
-                                    coroutineScope.launch {
-                                        viewModel.showBottomSheet(PlpBottomSheetType.LOCATION_SEARCH)
-                                        fullScreenBottomSheet.show()
-                                    }
-                                },
-                            )
+//                            PlpFilterPart(
+//                                isDarkTheme = isDarkTheme,
+//                                viewModel = viewModel,
+//                                configuration = configuration,
+//                                coroutineScope = coroutineScope,
+//                                onFilterClick = {
+//                                    keyboardController?.hide()
+//                                    coroutineScope.launch {
+//                                        viewModel.showBottomSheet(PlpBottomSheetType.FILTER)
+//                                        viewModel.onHalfScreenBottomSheetOpened()
+//                                        halfScreenBottomSheet.show()
+//
+//                                    }
+//                                },
+//                                onLocationSelectClick = {
+//                                    keyboardController?.hide()
+//                                    coroutineScope.launch {
+//                                        viewModel.showBottomSheet(PlpBottomSheetType.LOCATION_SEARCH)
+//                                        fullScreenBottomSheet.show()
+//                                    }
+//                                },
+//                            )
 
                             Divider()
 

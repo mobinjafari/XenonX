@@ -2,27 +2,20 @@ package org.lotka.xenonx.domain.model.model.plp
 
 
 import androidx.annotation.Keep
-import org.lotka.xenonx.domain.enums.LandUseTypes
-import org.lotka.xenonx.domain.enums.ListingType
 
 @Keep
 data class PlpItemResultModel(
-    var agencyName : String?,
-    var agencyLogoUrl : String?,
-    var featured: Boolean?,
-    var floorArea: Int?,
     var id: Int,
-    var landUseType: LandUseTypes?,
-    var lastModifiedDate: String?,
-    var listingType: ListingType?,
-    var numBeds: Int?,
-    var numParkings: Int?,
-    var priceOrDeposit: Long?,
-    var title: String?,
-    var unitPriceOrRent: Long?,
-    var agreedPrice: Boolean?,
-    var coverPicture: String?,
-    var searchDate : String?,
-    var locationPhrase : String?,
-
+    var userFirstName : String?,
+    var userLastName: String?,
+    var smallProfileImage: String?,
+    var lastMessageText : String?,
+    var lastMessageDate : String?,
+    var numUnreadMessage: Int?,
+    var lastTypingDate: String?,
+    var isPremiumUser: Boolean?,
+    var lastMessageType : String?,
+    var lastChatSeenDate: Long?,
+    var lastMessageStatus : String?,
+    var hasStory : Boolean?,
     )

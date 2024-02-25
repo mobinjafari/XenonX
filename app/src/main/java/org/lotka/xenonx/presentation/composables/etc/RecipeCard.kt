@@ -53,7 +53,7 @@ fun RecipeCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(
-                        if (recipe.title == "PRO_ANDROID") {
+                        if (recipe.userLastName == "PRO_ANDROID") {
                             R.drawable.android
                         } else {
                             R.drawable.android
@@ -75,22 +75,14 @@ fun RecipeCard(
             Column {
                 Row {
                     Text(text = "نام دستگاه :  ", style = KilidTypography.h3)
-                    Text(
-                        text = recipe.landUseType.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h4,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
+
 
                 }
 
                 Row {
                     Text(text = "آدرس اینترنتی :  ", style = KilidTypography.h3)
                     Text(
-                        text = recipe.numBeds.toString(),
+                        text = recipe.numUnreadMessage.toString(),
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),
@@ -103,7 +95,7 @@ fun RecipeCard(
                 Row {
                     Text(text = "آخرین زمان اتصال به سامانه : ", style = KilidTypography.h3)
                     Text(
-                        text = recipe.featured.toString(),
+                        text = recipe.isPremiumUser.toString(),
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),

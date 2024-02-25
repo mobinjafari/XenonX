@@ -21,7 +21,7 @@ class SearchPlpUseCase @Inject constructor(private val repository: HomeRepositor
 
         return flowOf(
             repository.loadPlpList(
-                page = page, filters = filters
+                page = page
             )
         )
     }

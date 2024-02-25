@@ -10,11 +10,11 @@ import androidx.compose.ui.text.font.FontWeight
 import org.lotka.xenonx.R
 
 val yekanBakh = FontFamily(
-    Font(R.font.yekan_bakh_fanum_2thin, FontWeight.Light),
-    Font(R.font.yekan_bakh_fanum_4regular, FontWeight.Normal),
-    Font(R.font.yekan_bakh_fanum_5medium, FontWeight.Medium),
-    Font(R.font.yekan_bakh_fanum_6bold, FontWeight.Bold),
-    Font(R.font.yekan_bakh_fanum_7heavy, FontWeight.Black),
+    Font(R.font.ubuntu_light, FontWeight.Light),
+    Font(R.font.ubuntu_regular, FontWeight.Normal),
+    Font(R.font.ubuntu_medium, FontWeight.Medium),
+    Font(R.font.ubuntu_bold, FontWeight.Bold),
+    Font(R.font.ubuntu_bold, FontWeight.Black),
 )
 
 

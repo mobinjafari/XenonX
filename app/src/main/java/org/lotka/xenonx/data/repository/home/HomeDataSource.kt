@@ -16,7 +16,7 @@ interface HomeDataSource {
     suspend fun pdpDetail(id: Int): ResultState<PdpModel>
     suspend fun pdpCountTracker(id: Int): ResultState<Boolean>
 
-    suspend fun loadPlpList(page: Int, filters: String): ResultState<PlpResponseModel>
+    suspend fun loadPlpList(page: Int): ResultState<PlpResponseModel>
     suspend fun getContactInformation(identifier: Int): ResultState<ContactInformation>
     suspend fun getAppStatus(): ResultState<AppStatusResponse>
 }

@@ -17,7 +17,7 @@ interface HomeRepository {
 
     suspend fun getUserContactInfo(id: Int): ResultState<ContactInformation>
 
-    suspend fun loadPlpList(page: Int , filters:String): ResultState<PlpResponseModel>
+    suspend fun loadPlpList(page: Int ): ResultState<PlpResponseModel>
     suspend fun getAppUpdate(): ResultState<AppStatusResponse>
 
 

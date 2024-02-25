@@ -13,8 +13,10 @@ import org.lotka.xenonx.domain.util.ResultState
 import org.lotka.xenonx.domain.util.Sektorum
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.min
 
 @Singleton
 class HomeRemoteDataSource @Inject constructor(
@@ -52,17 +54,50 @@ class HomeRemoteDataSource @Inject constructor(
     }
 
 
+
     override suspend fun loadPlpList(
         page: Int,
-        filters: String
     ): ResultState<PlpResponseModel> {
-        return try {
 
-          //  val jsonFilters = JSONObject(Gson().toJson(filters))
-            val mediaType = "application/json; charset=utf-8".toMediaType()
-           // val requestBody = jsonFilters.toRequestBody(mediaType)
-            val result = apiService.searchListings(page = page, requestBody = filters.toString().toRequestBody(mediaType))
-            ResultState.Success(result.toDomain())
+        val allItems = List(10000) { index ->
+            // Calculate image number within the range 3000 to 4000
+            val imageNumber = 3000 + (index % 1001) // Adjusted to cycle through 3000 to 4000 correctly
+            PlpItemResultModel(
+                id = index,
+                userFirstName = "User$index",
+                userLastName = "Last$index",
+                smallProfileImage = "https://ozgrozer.github.io/100k-faces/0/3/00${imageNumber}.jpg",
+                lastMessageText = "Hello from User$index",
+                numUnreadMessage = index % 3,
+                lastTypingDate = "2023-04-01T12:00:00Z",
+                isPremiumUser = index % 2 == 0,
+                lastMessageType = "text",
+                lastChatSeenDate = System.currentTimeMillis() - (1000 * 60 * 60 * 24 * index),
+                lastMessageStatus = "sent",
+                hasStory = index % 2 == 1,
+                lastMessageDate = "2023-04-01T12:00:00Z"
+            )
+        }
+
+        // Assuming each page shows 20 items
+        val pageSize = 23
+        // Adjust calculation for startIndex to accommodate page starting at 0
+        val startIndex = page * pageSize
+        // Calculate the endIndex for the given page
+        val endIndex = min(startIndex + pageSize, allItems.size)
+
+        return try {
+            // Check if the page number is within the valid range
+            if (startIndex < allItems.size) {
+                // Extract the sublist for the requested page
+                val pageItems = allItems.subList(startIndex, endIndex)
+                // Assuming PlpResponseModel can directly take the sublist of items
+                val responseModel = PlpResponseModel(pageItems, 10000)
+                ResultState.Success(responseModel)
+            } else {
+                // Handle case where the page number is out of range
+                ResultState.Error(apiExceptionHandler.traceErrorException(Throwable("Page number out of range")))
+            }
         } catch (e: Exception) {
             ResultState.Error(apiExceptionHandler.traceErrorException(e))
         }

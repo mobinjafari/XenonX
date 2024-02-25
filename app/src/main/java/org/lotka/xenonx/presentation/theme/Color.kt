@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 val Purple200 = Color(0xFFBB86FC)
 val PrimaryLight = Color(0xFF0F45B2)
 val BoeingBlue = Color(0xFF1C4087)
-val PrimaryDark = Color(0xFF640434)
+val PrimaryDark = Color(0xFF229ED9)
 val PrimaryTransparentBackground = Color(0xFFD6E0F2)
 val Teal200 = Color(0xFF03DAC5)
 val White = Color.White
@@ -65,7 +65,7 @@ val kilidDarkTexts = Color(0xFFECECEC)
 val kilidPillsBackground = Color(0xFFC2C2C2)
 val kilidWhiteTexts = Color(0xFF000000)
 
-val kilidPrimaryColor = Color(0xFF520029)
+val kilidPrimaryColor = Color(0xFF229ED9)
 val newSecondaryColor = Color(0xFFD0D5DD)
 
 

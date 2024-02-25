@@ -31,9 +31,8 @@ class HomeRepositoryImpl @Inject constructor(private val dataSource: HomeDataSou
 
     override suspend fun loadPlpList(
         page: Int,
-        filters: String
     ): ResultState<PlpResponseModel> {
-        return dataSource.loadPlpList(page, filters)
+        return dataSource.loadPlpList(page)
     }
 
     override suspend fun getAppUpdate(): ResultState<AppStatusResponse> {

@@ -39,7 +39,7 @@ fun HomeTopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(55.dp)
-            .background(kilidPrimaryColor),
+            .background(Color.White),
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

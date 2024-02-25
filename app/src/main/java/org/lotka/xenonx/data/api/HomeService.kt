@@ -25,7 +25,6 @@ interface HomeService {
     suspend fun searchListings(
         @Query("page") page: Int,
         @Query("sort") sort: String = "DATE_DESC",
-        @Body requestBody: RequestBody
     ): OldPlpRemote
 
     @GET("listing_api/v1.0/gListing/single")
