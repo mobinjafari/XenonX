@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+
+
+    <application
+        android:name=".presentation.ui.app.BaseAppController"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.KilidPro"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+        <profileable
+            android:shell="true"
+            tools:targetApi="34" />
+
+
+        <activity
+            android:name=".presentation.ui.app.HomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KilidPro.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+
+        <activity
+            android:name=".presentation.ui.app.UpdateActivity"
+            android:theme="@style/Theme.KilidPro.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
+
+<!--        <meta-data-->
+<!--            android:name="google_analytics_adid_collection_enabled"-->
+<!--            android:value="false" />-->
+
+    </application>
+
+</manifest>

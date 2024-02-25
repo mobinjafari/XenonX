@@ -1,0 +1,16 @@
+package org.lotka.xenonx.presentation.ui.screens.plp
+
+sealed class PlpScreenEvent {
+
+    object NavigateToSignUp : PlpScreenEvent()
+    class ShowSnackBar(val message: String?) : PlpScreenEvent()
+
+    object NewSearchEvent : PlpScreenEvent()
+
+    object NextPageEvent : PlpScreenEvent()
+
+    object SearchLocationPhrase : PlpScreenEvent()
+
+    // restore after process death
+    object RestoreStateEvent : PlpScreenEvent()
+}
