@@ -69,13 +69,13 @@ class HomeRemoteDataSource @Inject constructor(
                 smallProfileImage = "https://ozgrozer.github.io/100k-faces/0/3/00${imageNumber}.jpg",
                 lastMessageText = "Hello from User$index",
                 numUnreadMessage = index % 3,
-                lastTypingDate = "2023-04-01T12:00:00Z",
+                lastTypingDate = "10:01",
                 isPremiumUser = index % 2 == 0,
                 lastMessageType = "text",
                 lastChatSeenDate = System.currentTimeMillis() - (1000 * 60 * 60 * 24 * index),
                 lastMessageStatus = "sent",
                 hasStory = index % 2 == 1,
-                lastMessageDate = "2023-04-01T12:00:00Z"
+                lastMessageDate = "15:00",
             )
         }
 

@@ -34,6 +34,7 @@ import org.lotka.xenonx.R
 import org.lotka.xenonx.domain.enums.ListingType
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import org.lotka.xenonx.presentation.composables.FastImage
+import org.lotka.xenonx.presentation.theme.TelegramColor
 import org.lotka.xenonx.presentation.theme.kilidDarkBackgound
 import org.lotka.xenonx.presentation.theme.kilidDarkTexts
 import org.lotka.xenonx.presentation.theme.kilidWhiteBackgound
@@ -43,17 +44,17 @@ import org.lotka.xenonx.util.extension.addThousandsSeparator
 
 @Composable
 fun PlpItem(
-    isDarkTheme : Boolean,
+    isDarkTheme: Boolean,
     item: PlpItemResultModel,
     screen: Configuration,
-    onMoreClicked : (id:Int) -> Unit,
-    onClicked : (id:Int) -> Unit,
-    onLadderUpClick : (id:Int) -> Unit,
-    onFeaturedClick : (id:Int) -> Unit,
+    onMoreClicked: (id: Int) -> Unit,
+    onClicked: (id: Int) -> Unit,
+    onLadderUpClick: (id: Int) -> Unit,
+    onFeaturedClick: (id: Int) -> Unit,
     index: Int,
 
     ) {
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr ) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         val isFeatured = item.isPremiumUser
         Card(
             modifier = Modifier
@@ -62,11 +63,13 @@ fun PlpItem(
                 .clickable { onClicked(item.id) },
 //        shape = RoundedCornerShape(8.dp) ,
 //        border = BorderStroke( 1.dp  , if (isDarkTheme) kilidDarkBorders else kilidWhiteBorders ),
-            elevation = 0.dp) {
+            elevation = 0.dp
+        ) {
 
 
             val thumbnailUrl: String = item.smallProfileImage ?: "string"
-            val thumbnailDrawable: Int? = if (thumbnailUrl == "string") R.drawable.nd_noimage else null
+            val thumbnailDrawable: Int? =
+                if (thumbnailUrl == "string") R.drawable.nd_noimage else null
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -78,15 +81,12 @@ fun PlpItem(
 
                 FastImage(
                     modifier = Modifier
-                        .size(60.dp)
-                    ,
+                        .size(60.dp),
                     imageUrl = thumbnailUrl ?: thumbnailDrawable,
                     contentDescription = "Plp Item Image",
                     isRoundImage = true
 
                 )
-
-
 
 
                 // Advertisement Info
@@ -102,13 +102,13 @@ fun PlpItem(
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(start = 12.dp, top = 16.dp)
+                        modifier = Modifier.padding(start = 12.dp, top = 12.dp)
+
                     ) {
 
 
-
                         Text(
-                            text = item.userFirstName  ?: "نام ناشناخته",
+                            text = item.userFirstName ?: "نام ناشناخته",
                             style = MaterialTheme.typography.h4,
                             color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
                         )
@@ -120,33 +120,43 @@ fun PlpItem(
                         Text(
                             text = item.lastMessageText ?: "نام ناشناخته",
                             style = MaterialTheme.typography.h3,
-                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
+                            color = if (isDarkTheme) Color.White else Color.Gray,
                         )
 
 
                     }
 
 
-
                 }
-                Column (
 
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                Column(
+
+                    horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
-                ){
 
-                    Text(text = item.lastMessageDate.toString(), color = Color.Gray, fontSize = 16.sp)
+                ) {
+
+                    Text(
+                        text = item.lastMessageDate.toString(),
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
 
 
-                    Box(modifier = Modifier
-                        .size(16.dp)
-                        .clip(shape = CircleShape)
-                        .background(Color.Green),
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(shape = CircleShape)
+                            .background(TelegramColor),
                         Alignment.Center
 
-                    ){
-                        Text(text = item.numUnreadMessage.toString(), color = Color.Black, fontSize = 8.sp,
-                            textAlign = TextAlign.Center)
+                    ) {
+                        Text(
+                            text = item.numUnreadMessage.toString(),
+                            color = Color.White,
+                            fontSize = 10.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
 
                 }
@@ -157,9 +167,11 @@ fun PlpItem(
 
         }
         Spacer(modifier = Modifier.height(12.dp))
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 80.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 80.dp)
+        )
 
 
     }

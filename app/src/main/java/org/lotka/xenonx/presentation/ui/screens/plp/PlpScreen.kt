@@ -90,6 +90,7 @@ import org.lotka.xenonx.presentation.ui.screens.plp.compose.PlpFilterPart
 import org.lotka.xenonx.presentation.util.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.presentation.ui.screens.plp.compose.HomeTabRow
 import timber.log.Timber
 import java.util.Collections.emptyList
 
@@ -337,7 +338,7 @@ fun PlpScreen(
                                     Row(modifier = Modifier
                                         .fillMaxWidth()
                                         .background(kilidPrimaryColor)
-                                        .padding(vertical = 8.dp , horizontal = 12.dp)   ,
+                                        .padding(vertical = 8.dp, horizontal = 12.dp)   ,
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.Center) {
                                         Text(text = "آپدیت جدید در دسترس است" , style = KilidTypography.h3 , color = White)
@@ -379,185 +380,14 @@ fun PlpScreen(
                             )
                             {
 
+                             HomeTabRow(
+                                 navController = navController,
+                                 viewModel = viewModel,
+                                 onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
+                                 onToggleTheme = onToggleTheme,
+                                 isDarkTheme = isDarkTheme
+                             )
 
-                                LazyColumn(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(if (isDarkTheme) kilidDarkBackgound else kilidWhiteBackgound),
-                                    state = lazyListState,
-                                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                                    horizontalAlignment = CenterHorizontally
-                                ) {
-
-
-                                    when (uiState) {
-                                        is UIState.Error -> {
-                                            item {
-                                                Column(
-                                                    verticalArrangement = Center,
-                                                    horizontalAlignment = CenterHorizontally,
-                                                    modifier = Modifier.height(
-                                                        (configuration.screenHeightDp.dp / 3) * 2
-                                                    )
-
-                                                ) {
-                                                    Text(
-                                                        text = "خطا در ارتباط با شبکه",
-                                                        style = KilidTypography.h4.copy(fontSize = 18.sp),
-                                                        color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
-                                                    )
-                                                    Text(
-                                                        text = "لطفا اتصال به اینترنت را بررسی کنید ",
-                                                        style = KilidTypography.h3.copy(fontSize = 14.sp),
-                                                        color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
-                                                    )
-                                                    Spacer(modifier = Modifier.height(16.dp))
-
-
-                                                    MobinButton(
-                                                        title = "تلاش مجدد",
-                                                        onClick = {
-                                                            viewModel.onTriggerEvent(
-                                                                PlpScreenEvent.NewSearchEvent
-                                                            )
-                                                        },
-                                                        outline = true,
-                                                        modifier = Modifier
-                                                            .height(40.dp)
-                                                            .padding(horizontal = 32.dp)
-                                                            .border(
-                                                                BorderStroke(
-                                                                    width = 2.dp,
-                                                                    color = kilidPrimaryColor
-                                                                ), RoundedCornerShape(8.dp)
-                                                            )
-                                                    )
-                                                }
-                                            }
-                                        }
-
-                                        UIState.Loading -> {
-                                            item {
-                                                Box(
-                                                    modifier = Modifier
-                                                        .height((configuration.screenHeightDp.dp / 3) * 2)
-                                                        .fillMaxWidth(),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    LottieLoading(size = 150.dp)
-                                                }
-                                            }
-                                        }
-
-                                        else -> {
-
-                                            if (sessions.isEmpty() && uiState == UIState.Success) {
-                                                item {
-                                                    Box(
-                                                        modifier = Modifier
-                                                            .padding(8.dp)
-                                                            .fillMaxWidth()
-                                                            .height(
-                                                                100.dp
-                                                            ),
-                                                        contentAlignment = Alignment.Center
-                                                    ) {
-
-                                                        if (viewModel.filterManager.getActiveFilters()
-                                                                .isEmpty()
-                                                        ) {
-
-                                                            Text(
-                                                                text = "شما هیچ آگهی ندارید \n از طریق دکمه زیر آگهی ثبت کنید",
-                                                                style = KilidTypography.h3,
-                                                                textAlign = TextAlign.Center
-                                                            )
-
-                                                        } else {
-
-                                                            Column(
-                                                                modifier = Modifier.fillMaxWidth(),
-                                                                verticalArrangement = Center,
-                                                                horizontalAlignment = CenterHorizontally
-                                                            ) {
-
-                                                                Text(
-                                                                    text = "برای این دسته بندی آگهی وجود ندارد",
-                                                                    style = KilidTypography.h3
-                                                                )
-
-                                                                Text(
-                                                                    text = "حذف همه فیلتر ها",
-                                                                    style = KilidTypography.h3.copy(
-                                                                        color = Color.Blue
-                                                                    ),
-                                                                    modifier = Modifier.clickable {
-                                                                            viewModel.clearAllFilters()
-                                                                    }
-                                                                )
-                                                            }
-
-                                                        }
-                                                    }
-                                                }
-                                            } else {
-
-                                                itemsIndexed(items = sessions) { index, recipe ->
-                                                    viewModel.latestIndex.value = index
-                                                    if (uiState != UIState.PaginationError) {
-                                                        viewModel.onChangeRecipeScrollPosition(index)
-
-                                                        if (((index + 1) >= PAGE_SIZE) && (page == 0) && !loading) {
-                                                            Timber.tag("pagination")
-                                                                .d("for zero page --- latest index : " + index + " and ")
-                                                            viewModel.onTriggerEvent(PlpScreenEvent.NextPageEvent)
-                                                        } else if ((index + 3) >= (((page + 1) * PAGE_SIZE)) && !loading) {
-//                                                            Timber.tag("pagination").d("for ${viewModel.calculateOutput(page)} other page --- latest index : " + index + " and page is: ${page} and multiple ${(page * PAGE_SIZE)} ")
-                                                            viewModel.onTriggerEvent(PlpScreenEvent.NextPageEvent)
-                                                        }
-
-                                                    }
-
-
-
-
-                                                    if (recipe != null) {
-
-                                                        PlpItem(
-                                                            isDarkTheme = isDarkTheme,
-                                                            item = recipe,
-                                                            screen = configuration,
-                                                            onMoreClicked = {
-//                                                                coroutineScope.launch {
-//                                                                    viewModel.showBottomSheet(
-//                                                                        PlpBottomSheetType.LISTING_ITEM
-//                                                                    )
-//                                                                    halfScreenBottomSheet.show()
-//                                                                }
-                                                            },
-                                                            onClicked = {
-                                                                viewModel.onHalfScreenBottomSheetOpened()
-                                                                viewModel.savedScrollIndex = index
-                                                                val route =
-                                                                    HomeScreensNavigation.pdp.route + "/${it}"
-                                                                onNavigateToRecipeDetailScreen(route)
-                                                            },
-                                                            onLadderUpClick = {},
-                                                            onFeaturedClick = {},
-                                                            index = index
-                                                        )
-
-
-                                                    }
-                                                }
-                                            }
-
-
-                                        }
-                                    }
-
-
-                                }
 
                                 this@Column.AnimatedVisibility(
                                     visible = uiState == UIState.PaginationLoading,
