@@ -1,13 +1,9 @@
-package org.lotka.xenonx.presentation.ui.navigation
+package com.kilid.portal.presentation.ui.navigation
 
 sealed class HomeScreensNavigation(val route: String) {
 
 
-    object splash : HomeScreensNavigation(route = "splash")
-
-    object plp : HomeScreensNavigation(route = "plp")
-    object pdp : HomeScreensNavigation(route = "pdp")
-
+    object weather : HomeScreensNavigation(route = "weather")
     object ChatHome : HomeScreensNavigation(route = "ChatHome")
     object RegisterScreen : HomeScreensNavigation(route = "Register")
     object LoginScreen : HomeScreensNavigation(route = "login")

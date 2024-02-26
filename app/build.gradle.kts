@@ -162,6 +162,7 @@ dependencies {
     implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("com.google.firebase:firebase-messaging-ktx:23.3.1")
     implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     kapt ("androidx.room:room-compiler:2.6.0")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.0")

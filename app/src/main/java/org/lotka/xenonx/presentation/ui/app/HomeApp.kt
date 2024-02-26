@@ -1,4 +1,4 @@
-package org.lotka.xenonx.presentation.ui.app
+package com.kilid.portal.presentation.ui.app
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.EnterTransition
@@ -9,21 +9,21 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
+
+import org.lotka.xenonx.presentation.ui.screens.chats.HomeTabRow
+import com.kilid.portal.presentation.ui.screens.chats.LoginScreen
+import com.kilid.portal.presentation.ui.screens.chats.RegisterScreen
+
+
+
+import org.lotka.xenonx.presentation.ui.app.HomeActivity
+import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
-import org.lotka.xenonx.presentation.ui.screens.pdp.PdpScreen
-import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreen
-import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
-import org.lotka.xenonx.presentation.ui.screens.splash.SplashScreen
 import org.lotka.xenonx.util.SettingsDataStore
 
 
@@ -49,7 +49,7 @@ fun HomeApp(
 
         content = { _ ->
             NavHost(navController = navController,
-                startDestination = HomeScreensNavigation.plp.route,
+                startDestination = HomeScreensNavigation.RegisterScreen.route,
                 enterTransition = {
                     // you can change whatever you want transition
                     EnterTransition.None
@@ -60,42 +60,27 @@ fun HomeApp(
                 }) {
 
                 composable(
-                    route = HomeScreensNavigation.splash.route,
-                    ) {
-                    SplashScreen(navController = navController)
+                    route = HomeScreensNavigation.RegisterScreen.route,
+                ) {
+                    RegisterScreen(navController = navController)
                 }
-
-
 
 
                 composable(
-                    route = HomeScreensNavigation.plp.route,
+                    route = HomeScreensNavigation.LoginScreen.route,
                 ) {
-                    val factory = HiltViewModelFactory(LocalContext.current, it)
-                    val viewModel: PlpViewModel =
-                        viewModel(activity, "RecipeDetailViewModel", factory)
-                    PlpScreen(
-                        navController = navController,
-                        onNavigateToRecipeDetailScreen = navController::navigate,
-                        viewModel = viewModel,
-                        isDarkTheme = settingsDataStore.isDark.value,
-                        onToggleTheme = settingsDataStore::toggleTheme,
-                    )
+                    LoginScreen(navController = navController)
                 }
 
+
                 composable(
-                    route = HomeScreensNavigation.pdp.route + "/{recipeId}",
-                    arguments = listOf(navArgument("recipeId") {
-                        type = NavType.IntType
-                    })
+                    route = HomeScreensNavigation.ChatHome.route,
                 ) {
-                    PdpScreen(
-                        navController = navController,
-                        recipeId = navBackStackEntry?.arguments?.getInt("recipeId"),
-                        isDarkTheme = settingsDataStore.isDark.value,
-                        onToggleTheme = settingsDataStore::toggleTheme
-                    )
+                    HomeTabRow(navController = navController)
                 }
+
+
+
 
 
             }

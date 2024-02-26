@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.kilid.portal.presentation.ui.app.HomeApp
 import org.lotka.xenonx.di.DataStoreManager
 import org.lotka.xenonx.presentation.util.CustomUpdateManager
 import org.lotka.xenonx.util.SettingsDataStore

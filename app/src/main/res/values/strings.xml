@@ -108,5 +108,8 @@
     <string name="last_name">نام خانوادگی</string>
     <string name="active_sessions">از طریق این بخش  میتوانید تمام دستگاه هایی که به حساب کاربری شما وصل شده اند را مشاهده کنید و در صورت نیاز آنها را قطع کنید</string>
     <string name="not_specified">تعیین نشده</string>
+    <string name="username">UserName</string>
+    <string name="password1">Password</string>
+    <string name="emile1">Email</string>
 
 </resources>
