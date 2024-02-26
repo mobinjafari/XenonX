@@ -17,13 +17,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 
 import org.lotka.xenonx.presentation.ui.screens.chats.HomeTabRow
 import com.kilid.portal.presentation.ui.screens.chats.LoginScreen
-import com.kilid.portal.presentation.ui.screens.chats.RegisterScreen
+import org.lotka.xenonx.presentation.ui.screens.chats.RegisterScreen
 
 
 
 import org.lotka.xenonx.presentation.ui.app.HomeActivity
 import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
+import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
+import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.util.SettingsDataStore
 
 
@@ -34,7 +36,11 @@ fun HomeApp(
     activity: HomeActivity,
     viewModel: MainViewModel,
     navController: NavHostController,
-    settingsDataStore: SettingsDataStore
+    settingsDataStore: SettingsDataStore,
+    plpviewModel: PlpViewModel,
+    onNavigateToRecipeDetailScreen: (String) -> Unit,
+    isDarkTheme: Boolean,
+    onToggleTheme: () -> Unit,
 ) {
 
 
@@ -74,9 +80,16 @@ fun HomeApp(
 
 
                 composable(
-                    route = HomeScreensNavigation.ChatHome.route,
+                    route = HomeScreensNavigation.HomeChatScreen.route,
                 ) {
-                    HomeTabRow(navController = navController)
+                    HomeChatScreen(
+                        navController = navController,
+                        viewModel = plpviewModel,
+                        onNavigateToRecipeDetailScreen =onNavigateToRecipeDetailScreen,
+                        isDarkTheme = isDarkTheme,
+                        onToggleTheme = onToggleTheme
+
+                    )
                 }
 
 

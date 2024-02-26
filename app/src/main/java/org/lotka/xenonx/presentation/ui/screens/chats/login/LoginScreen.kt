@@ -36,11 +36,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import com.kilid.portal.presentation.composables.etc.TextFieldHeader
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.lotka.xenonx.presentation.composables.PasswordTextField
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.R
 import org.lotka.xenonx.presentation.composables.etc.KilidTextField
 import org.lotka.xenonx.presentation.composables.etc.MobinButton
+import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -129,10 +132,19 @@ fun LoginScreen(
                         isErrorMessage = "")
                     Spacer(modifier = Modifier.height(24.dp))
                     MobinButton(title = "Login", onClick = {
+
                         viewModel.loginUser(
                             email = viewModel.email.value,
                             password = viewModel.password.value
                         )
+                        viewModel.loginState
+                            .onEach { state ->
+                                if (state.isSuccess?.isNotEmpty() == true) {
+                                    navController.navigate(HomeScreensNavigation.HomeChatScreen.route)
+                                }
+                            }
+                            .launchIn(scope)
+
                     })
 
 

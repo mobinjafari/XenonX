@@ -1,4 +1,4 @@
-package com.kilid.portal.presentation.ui.screens.chats
+package org.lotka.xenonx.presentation.ui.screens.chats
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
