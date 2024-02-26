@@ -283,7 +283,9 @@ fun PlpScreen(
 
             ) {
 
-                Scaffold(topBar = {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
                     HomeTopBar(
                         onClick = {},
                         mainScreens = true,
@@ -293,7 +295,12 @@ fun PlpScreen(
                         onBackPressed = onBack,
                         isDarkMode = isDarkTheme,
                     )
-                },
+                },  drawerElevation = 0.dp,
+                    drawerGesturesEnabled = false,
+                    drawerContentColor = Color.White,
+                    drawerScrimColor = Color.White,
+                    
+
                     content = {
                         val swipeRefreshState = rememberPullRefreshState(
                             refreshing = uiState == UIState.Loading,

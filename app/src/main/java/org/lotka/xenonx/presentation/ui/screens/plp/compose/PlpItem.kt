@@ -34,6 +34,7 @@ import org.lotka.xenonx.R
 import org.lotka.xenonx.domain.enums.ListingType
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import org.lotka.xenonx.presentation.composables.FastImage
+import org.lotka.xenonx.presentation.theme.TelegramBackGroundColor
 import org.lotka.xenonx.presentation.theme.TelegramColor
 import org.lotka.xenonx.presentation.theme.kilidDarkBackgound
 import org.lotka.xenonx.presentation.theme.kilidDarkTexts
@@ -101,7 +102,7 @@ fun PlpItem(
 
                     Column(
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.Start,
                         modifier = Modifier.padding(start = 12.dp, top = 12.dp)
 
                     ) {
@@ -147,14 +148,14 @@ fun PlpItem(
                         modifier = Modifier
                             .size(24.dp)
                             .clip(shape = CircleShape)
-                            .background(TelegramColor),
+                            .background(TelegramBackGroundColor),
                         Alignment.Center
 
                     ) {
                         Text(
                             text = item.numUnreadMessage.toString(),
                             color = Color.White,
-                            fontSize = 10.sp,
+                            fontSize = 12.sp,
                             textAlign = TextAlign.Center
                         )
                     }

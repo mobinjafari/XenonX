@@ -1,7 +1,6 @@
 package org.lotka.xenonx.presentation.ui.screens.plp.compose
 
 
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -89,6 +88,7 @@ fun HomeTabRow(
                 onToggleTheme = onToggleTheme,
                 isDarkTheme = isDarkTheme
             )
+
             0 -> Personal(
                 navController = navController,
                 viewModel = viewModel,
@@ -102,7 +102,7 @@ fun HomeTabRow(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -115,12 +115,11 @@ fun HomeTabRow(
 
                 TabRowDefaults.Indicator(
                     color = TelegramColor,
-                    height = 6.dp,
+                    height = 4.dp,
                     modifier = Modifier
                         .width(10.dp) // Set the width to 10dp
                         .tabIndicatorOffset(tabPositions[selectedTabIndex])
                 )
-
 
 
             },
@@ -130,18 +129,26 @@ fun HomeTabRow(
                 .height(48.dp)
         ) {
             tabs.forEachIndexed { index, title ->
+                val modifier = if (selectedTabIndex == index) {
+                    Modifier
+                        .height(48.dp)
+                        .width(10.dp)
+                } else {
+                    Modifier
+                        .height(48.dp)
+                        .fillMaxWidth()
+                }
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    modifier = Modifier
-                        .height(48.dp)
-                        .fillMaxWidth()
+                    modifier = modifier
+
                 ) {
                     Text(
                         text = title,
                         color = if (selectedTabIndex == index) TelegramColor else Color.Gray,
                         modifier = Modifier.padding(8.dp),
-                         fontSize = 16.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -200,12 +207,12 @@ fun Personal(
                         Text(
                             text = "خطا در ارتباط با شبکه",
                             style = KilidTypography.h4.copy(fontSize = 18.sp),
-                            color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
+                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts
                         )
                         Text(
                             text = "لطفا اتصال به اینترنت را بررسی کنید ",
                             style = KilidTypography.h3.copy(fontSize = 14.sp),
-                            color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
+                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
@@ -404,12 +411,12 @@ fun AllChats(
                         Text(
                             text = "خطا در ارتباط با شبکه",
                             style = KilidTypography.h4.copy(fontSize = 18.sp),
-                            color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
+                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts
                         )
                         Text(
                             text = "لطفا اتصال به اینترنت را بررسی کنید ",
                             style = KilidTypography.h3.copy(fontSize = 14.sp),
-                            color = if(isDarkTheme) kilidDarkTexts else kilidWhiteTexts
+                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
