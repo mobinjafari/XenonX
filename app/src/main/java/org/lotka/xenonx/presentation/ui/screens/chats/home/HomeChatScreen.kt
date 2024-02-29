@@ -278,6 +278,11 @@ fun HomeChatScreen(
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BottomNavigationItemMenu(
+                            selectItem = BottomNavigationItem.CHATLIST,
+                            navController = navController)
+                    },
                     topBar = {
                     HomeTopBar(
                         onClick = {},
@@ -387,6 +392,7 @@ fun HomeChatScreen(
                                  onToggleTheme = onToggleTheme,
                                  isDarkTheme = isDarkTheme
                              )
+
 
 
                                 this@Column.AnimatedVisibility(

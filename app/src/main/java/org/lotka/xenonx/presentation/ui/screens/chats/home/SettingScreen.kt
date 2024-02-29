@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun ProfileScreen(
+fun SettingScreen(
     onBack: () -> Unit,
     onToggleTheme: () -> Unit,
     isDarkTheme: Boolean,
@@ -21,7 +21,7 @@ fun ProfileScreen(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             BottomNavigationItemMenu(
-                selectItem = BottomNavigationItem.PROFILE,
+                selectItem = BottomNavigationItem.SETTINGS,
                 navController = navController
             )
         },
@@ -41,10 +41,11 @@ fun ProfileScreen(
         drawerScrimColor = Color.White,
 
 
-        content = { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
+        content = {
+          paddingValues ->
+            Column (modifier = Modifier.padding(paddingValues)) {
 
             }
-        })
-        }
 
+        })
+}
