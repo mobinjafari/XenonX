@@ -29,11 +29,15 @@ class HomeRepositoryImpl @Inject constructor(private val dataSource: HomeDataSou
         return dataSource.getContactInformation(id)
     }
 
+
+
     override suspend fun loadPlpList(
         page: Int,
     ): ResultState<PlpResponseModel> {
         return dataSource.loadPlpList(page)
     }
+
+
 
     override suspend fun getAppUpdate(): ResultState<AppStatusResponse> {
         return dataSource.getAppStatus()

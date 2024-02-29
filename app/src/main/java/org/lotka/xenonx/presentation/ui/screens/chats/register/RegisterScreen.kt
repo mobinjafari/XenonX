@@ -40,12 +40,12 @@ import androidx.navigation.NavController
 
 import com.kilid.portal.presentation.composables.etc.TextFieldHeader
 import com.kilid.portal.presentation.ui.navigation.HomeScreensNavigation
-import com.kilid.portal.presentation.ui.screens.chats.register.RegisterViewModel
 import org.lotka.xenonx.presentation.composables.PasswordTextField
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.R
 import org.lotka.xenonx.presentation.composables.etc.KilidTextField
 import org.lotka.xenonx.presentation.composables.etc.MobinButton
+import org.lotka.xenonx.util.compose.CheckRegister
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -56,6 +56,8 @@ fun RegisterScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val state = viewModel.registerState.collectAsState(initial = null)
+
+
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         val scaffoldState= rememberScaffoldState()
@@ -85,6 +87,8 @@ fun RegisterScreen(
 
             }
         }
+
+        CheckRegister(viewModel, navController)
 
 
         Scaffold(
@@ -148,6 +152,7 @@ fun RegisterScreen(
                             viewModel.registerUser(
                             viewModel.userName.value,
                             viewModel.email.value,
+                                viewModel.number.value,
                             viewModel.password.value)
                     })
                     Spacer(modifier = Modifier.height(12.dp))

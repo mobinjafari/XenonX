@@ -1,4 +1,4 @@
-package com.kilid.portal.presentation.ui.screens.chats.login
+package org.lotka.xenonx.presentation.ui.screens.chats.login
 
 
 
@@ -48,7 +48,7 @@ import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
-    viewModel:LoginViewModel= hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
     navController: NavController) {
 
     val context = LocalContext.current

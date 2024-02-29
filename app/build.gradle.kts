@@ -5,7 +5,7 @@ plugins {
     id ("org.jetbrains.kotlin.plugin.serialization")
     id ("org.jetbrains.kotlin.android")
     id ("kotlin-parcelize")
-    id("com.google.protobuf") version "0.9.4"
+   // id("com.google.protobuf") version "0.9.4"
     id ("com.google.firebase.crashlytics")
 //    id ("com.google.firebase.firebase-perf")
     id ("com.google.gms.google-services")
@@ -163,6 +163,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-messaging-ktx:23.3.1")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.6.2")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
     kapt ("androidx.room:room-compiler:2.6.0")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.0")

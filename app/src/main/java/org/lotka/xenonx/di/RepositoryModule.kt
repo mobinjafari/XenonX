@@ -1,7 +1,6 @@
 package org.lotka.xenonx.di
 
-import AuthRemoteDataSource
-import com.kilid.portal.data.repository.auth.AuthRepositoryImpl
+import org.lotka.xenonx.data.repository.auth.AuthRepositoryImpl
 import org.lotka.xenonx.data.repository.home.HomeRemoteDataSource
 import org.lotka.xenonx.data.repository.home.HomeRepositoryImpl
 import org.lotka.xenonx.domain.repository.HomeRepository
@@ -9,24 +8,21 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
 import org.lotka.xenonx.domain.repository.AuthRepository
 import javax.inject.Singleton
 
-
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
-
-    @Singleton
     @Provides
+    @Singleton
     fun provideHomeRepository(remoteDataSource: HomeRemoteDataSource): HomeRepository =
         HomeRepositoryImpl(remoteDataSource)
 
-    @Singleton
     @Provides
-    fun AuthRepository(remoteDataSource: AuthRemoteDataSource): AuthRepository =
+    @Singleton
+    fun provideAuthRepository(remoteDataSource: AuthRemoteDataSource): AuthRepository =
         AuthRepositoryImpl(remoteDataSource)
-
-
 }

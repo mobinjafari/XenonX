@@ -10,7 +10,6 @@ import org.lotka.xenonx.domain.util.ResultState
 
 interface HomeDataSource {
 
-
     suspend fun searchLocation(text: String): ResultState<LocationSearchModel>
 
     suspend fun pdpDetail(id: Int): ResultState<PdpModel>

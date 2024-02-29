@@ -1,4 +1,4 @@
-package com.kilid.portal.domain.usecase.auth
+package org.lotka.xenonx.domain.usecase.auth
 
 
 import com.google.firebase.auth.AuthResult
