@@ -1,4 +1,4 @@
-package com.kilid.portal.presentation.composables.etc
+package org.lotka.xenonx.presentation.composables
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,9 +11,12 @@ import org.lotka.xenonx.presentation.theme.KilidTypography
 
 @Composable
 fun HeaderText(
-    text:String
+    text:String,
+    modifier: Modifier=Modifier
 ){
-    Text(text = text, fontWeight = FontWeight.Bold, color = Color.Black,style = KilidTypography.h4, fontSize = 24.sp)
+    Text(text = text, fontWeight = FontWeight.Bold,
+        color = Color.Black,style = KilidTypography.h4, fontSize = 24.sp
+    , modifier = modifier)
 }
 
 @Composable

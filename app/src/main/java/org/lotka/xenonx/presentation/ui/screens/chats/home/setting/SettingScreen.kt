@@ -1,4 +1,4 @@
-package org.lotka.xenonx.presentation.ui.screens.chats.home
+package org.lotka.xenonx.presentation.ui.screens.chats.home.setting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,9 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import org.lotka.xenonx.presentation.ui.screens.chats.home.BottomNavigationItem
+import org.lotka.xenonx.presentation.ui.screens.chats.home.BottomNavigationItemMenu
 
 @Composable
-fun ProfileScreen(
+fun SettingScreen(
     onBack: () -> Unit,
     onToggleTheme: () -> Unit,
     isDarkTheme: Boolean,
@@ -21,7 +23,7 @@ fun ProfileScreen(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             BottomNavigationItemMenu(
-                selectItem = BottomNavigationItem.PROFILE,
+                selectItem = BottomNavigationItem.SETTINGS,
                 navController = navController
             )
         },
@@ -41,10 +43,11 @@ fun ProfileScreen(
         drawerScrimColor = Color.White,
 
 
-        content = { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
+        content = {
+          paddingValues ->
+            Column (modifier = Modifier.padding(paddingValues)) {
 
             }
-        })
-        }
 
+        })
+}

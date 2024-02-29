@@ -1,6 +1,6 @@
 package org.lotka.xenonx.presentation.ui.screens.chats.welcome
 
-import com.kilid.portal.presentation.composables.etc.HeaderText
+import org.lotka.xenonx.presentation.composables.HeaderText
 
 
 

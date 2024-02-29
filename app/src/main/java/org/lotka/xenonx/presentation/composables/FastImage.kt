@@ -1,5 +1,7 @@
 package org.lotka.xenonx.presentation.composables
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -32,6 +34,10 @@ fun FastImage(
         .size(90.dp),
     isRoundImage: Boolean = false
 ) {
+
+
+
+
     Box(
         modifier = Modifier
 //            .background(Color.Gray)
@@ -50,7 +56,8 @@ fun FastImage(
             placeholder = painterResource(R.drawable.mediamodifier_design__4_ ),
             contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.matchParentSize()
+            modifier = Modifier
+                .matchParentSize()
                 .clip(shape = if (isRoundImage) CircleShape else RoundedCornerShape(8.dp))
             // This makes the AsyncImage fill the Box
         )

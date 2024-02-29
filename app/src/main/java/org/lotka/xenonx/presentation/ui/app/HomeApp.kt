@@ -22,7 +22,7 @@ import org.lotka.xenonx.presentation.ui.app.HomeActivity
 import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
-import org.lotka.xenonx.presentation.ui.screens.chats.home.ProfileScreen
+import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.home.StatusScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.login.LoginScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.register.RegisterScreen
