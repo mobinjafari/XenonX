@@ -108,7 +108,7 @@ tasks.register("printVersionName") {
 dependencies {
 
     implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
-    implementation("com.google.protobuf:protobuf-java:3.19.3")
+//    implementation("com.google.protobuf:protobuf-java:3.19.3")
 
 
     implementation ("androidx.core:core-ktx:1.12.0")
