@@ -2,6 +2,7 @@ package org.lotka.xenonx.data.repository.auth
 
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.core.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,8 @@ import javax.inject.Singleton
 class AuthRemoteDataSource @Inject constructor(
     val firebaseAuth: FirebaseAuth,
     val firestore: FirebaseFirestore,
-    val storage: FirebaseStorage
+    val storage: FirebaseStorage,
+    val context: android.content.Context
 ) : AuthDataSource {
 
     override fun loginUser(email: String, password: String): Flow<ResultState<AuthResult2>> {

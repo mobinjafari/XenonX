@@ -27,13 +27,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberModalBottomSheetState
@@ -56,6 +63,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
@@ -81,6 +90,11 @@ import org.lotka.xenonx.presentation.ui.screens.plp.bottom_sheet.SearchCityBotto
 import org.lotka.xenonx.presentation.util.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.presentation.composables.HeaderText
+import org.lotka.xenonx.presentation.composables.TextFieldHeader
+import org.lotka.xenonx.presentation.composables.etc.KilidTextField
+import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
+import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreenEvent
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.presentation.ui.screens.plp.compose.HomeTabRow
@@ -92,11 +106,12 @@ import java.util.Collections.emptyList
     ExperimentalComposeUiApi::class,
     ExperimentalMaterialApi::class,
 
-)
+    )
 @Composable
 fun HomeChatScreen(
     navController: NavController,
     viewModel: PlpViewModel,
+    profileViewModel: ProfileViewModel,
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
@@ -127,12 +142,12 @@ fun HomeChatScreen(
     // Create the ModalBottomSheetState with dynamic skipHalfExpanded value
     val halfScreenBottomSheet = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded =  false
+        skipHalfExpanded = false
     )
 
     val fullScreenBottomSheet = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded =  true
+        skipHalfExpanded = true
     )
 
     LaunchedEffect(fullScreenBottomSheet) {
@@ -198,12 +213,12 @@ fun HomeChatScreen(
                         },
                         onDismissFilterClicked = {
                             coroutineScope.launch {
-                               // viewModel.showBottomSheet(PlpBottomSheetType.NONE)
+                                // viewModel.showBottomSheet(PlpBottomSheetType.NONE)
                                 fullScreenBottomSheet.hide()
                             }
                         },
                         configuration = configuration,
-                        isDarkTheme= isDarkTheme,
+                        isDarkTheme = isDarkTheme,
                         selectedAreas = viewModel.filterManager.getSelectedLocations(),
                         onAddNewArea = {
                             viewModel.toggleCitySelection(it)
@@ -213,6 +228,7 @@ fun HomeChatScreen(
                         }
                     )
                 }
+
                 else -> {
 
                 }
@@ -221,50 +237,49 @@ fun HomeChatScreen(
     )
     {
 
-    ModalBottomSheetLayout(
-        sheetState = halfScreenBottomSheet,
-        sheetBackgroundColor = Color.Transparent,
-        scrimColor = colorResource(id = R.color.transparent_grey),
-        sheetElevation = 30.dp,
-        sheetContent = {
-            when (viewModel.halfScreenActiveBottomSheet) {
-                PlpBottomSheetType.LISTING_ITEM -> {
-                    ListingItemBottomSheet(
-                        viewModel, halfScreenBottomSheet, coroutineScope
-                    )
+        ModalBottomSheetLayout(
+            sheetState = halfScreenBottomSheet,
+            sheetBackgroundColor = Color.Transparent,
+            scrimColor = colorResource(id = R.color.transparent_grey),
+            sheetElevation = 30.dp,
+            sheetContent = {
+                when (viewModel.halfScreenActiveBottomSheet) {
+                    PlpBottomSheetType.LISTING_ITEM -> {
+                        ListingItemBottomSheet(
+                            viewModel, halfScreenBottomSheet, coroutineScope
+                        )
+                    }
+
+                    PlpBottomSheetType.FILTER -> {
+                        ListingFilterBottomSheet(
+                            viewModel = viewModel,
+                            halfScreenModalBottomSheet = halfScreenBottomSheet,
+                            fullScreenModalBottomSheet = fullScreenBottomSheet,
+                            coroutineScope = coroutineScope,
+                            onApplyFilterClicked = {
+                                coroutineScope.launch {
+                                    viewModel.showBottomSheet(PlpBottomSheetType.NONE)
+                                    halfScreenBottomSheet.hide()
+                                }
+                            },
+                            onDismissFilterClicked = {
+                                coroutineScope.launch {
+                                    viewModel.showBottomSheet(PlpBottomSheetType.NONE)
+                                    halfScreenBottomSheet.hide()
+                                }
+                            },
+                            configuration = configuration,
+                            isDarkTheme = isDarkTheme
+                        )
+
+                    }
+
+                    else -> {
+
+                    }
                 }
-                PlpBottomSheetType.FILTER -> {
-                    ListingFilterBottomSheet(
-                        viewModel = viewModel,
-                        halfScreenModalBottomSheet = halfScreenBottomSheet,
-                        fullScreenModalBottomSheet = fullScreenBottomSheet,
-                        coroutineScope = coroutineScope,
-                        onApplyFilterClicked = {
-                            coroutineScope.launch {
-                                viewModel.showBottomSheet(PlpBottomSheetType.NONE)
-                                halfScreenBottomSheet.hide()
-                            }
-                        },
-                        onDismissFilterClicked = {
-                            coroutineScope.launch {
-                                viewModel.showBottomSheet(PlpBottomSheetType.NONE)
-                                halfScreenBottomSheet.hide()
-                            }
-                        },
-                        configuration = configuration,
-                        isDarkTheme = isDarkTheme
-                    )
-
-                }
-
-                else -> {
-
-                }
-            }
-        },
-    ) {
-
-
+            },
+        ) {
 
 
             AuthTheme(
@@ -275,29 +290,50 @@ fun HomeChatScreen(
                 dialogQueue = dialogQueue.queue.value
 
             ) {
+                val chats = viewModel.chats
+                val userData = profileViewModel.userData
+                val showDialog = remember {
+                    mutableStateOf(false)
+                }
+                val onFabClick:()->Unit = {  showDialog.value = true}
+                val onDismiss:()->Unit = {  showDialog.value = false}
+                val onAddChat:()->Unit = {
+//                   viewModel.onAddChat(it)
+                }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         BottomNavigationItemMenu(
                             selectItem = BottomNavigationItem.CHATLIST,
-                            navController = navController)
+                            navController = navController
+                        )
+                    },
+                    floatingActionButton = {
+                        fabNavigation(
+                            onFabClick = { },
+                            onDismiss = { },
+                            showDialog = true,
+                            onAddChat = {
+
+                            }
+                        )
                     },
                     topBar = {
-                    HomeTopBar(
-                        onClick = {},
-                        mainScreens = true,
-                        onToggleTheme = {
-                            onToggleTheme()
-                        },
-                        onBackPressed = onBack,
-                        isDarkMode = isDarkTheme,
-                    )
-                },  drawerElevation = 0.dp,
+                        HomeTopBar(
+                            onClick = {},
+                            mainScreens = true,
+                            onToggleTheme = {
+                                onToggleTheme()
+                            },
+                            onBackPressed = onBack,
+                            isDarkMode = isDarkTheme,
+                        )
+                    }, drawerElevation = 0.dp,
                     drawerGesturesEnabled = false,
                     drawerContentColor = Color.White,
                     drawerScrimColor = Color.White,
-                    
+
 
                     content = {
                         val swipeRefreshState = rememberPullRefreshState(
@@ -340,15 +376,25 @@ fun HomeChatScreen(
                                         context.startActivity(intent)
                                     }) {
                                     Divider(color = White.copy(alpha = 0.3f))
-                                    Row(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(kilidPrimaryColor)
-                                        .padding(vertical = 8.dp, horizontal = 12.dp)   ,
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(kilidPrimaryColor)
+                                            .padding(vertical = 8.dp, horizontal = 12.dp),
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Center) {
-                                        Text(text = "آپدیت جدید در دسترس است" , style = KilidTypography.h3 , color = White)
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            text = "آپدیت جدید در دسترس است",
+                                            style = KilidTypography.h3,
+                                            color = White
+                                        )
                                         Spacer(modifier = Modifier.weight(1f))
-                                        Text(text = "نصب" , style = KilidTypography.h3 , color = White)
+                                        Text(
+                                            text = "نصب",
+                                            style = KilidTypography.h3,
+                                            color = White
+                                        )
                                     }
                                 }
 
@@ -385,13 +431,13 @@ fun HomeChatScreen(
                             )
                             {
 
-                             HomeTabRow(
-                                 navController = navController,
-                                 viewModel = viewModel,
-                                 onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
-                                 onToggleTheme = onToggleTheme,
-                                 isDarkTheme = isDarkTheme
-                             )
+                                HomeTabRow(
+                                    navController = navController,
+                                    viewModel = viewModel,
+                                    onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
+                                    onToggleTheme = onToggleTheme,
+                                    isDarkTheme = isDarkTheme
+                                )
 
 
 
@@ -524,12 +570,61 @@ fun HomeChatScreen(
     }
 }
 
+private fun PlpViewModel.onAddChat(it: Any) {
+
+}
 
 
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun fabNavigation(
+    onFabClick: () -> Unit,
+    onDismiss: () -> Unit,
+    showDialog: Boolean,
+    onAddChat: (String) -> Unit
+) {
 
+    val addChatMember = remember {
+        mutableStateOf("")
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { onDismiss.invoke() },
+            buttons = {
+                Button(onClick = { onAddChat.invoke(addChatMember.value) }
+                ) {
+                    TextFieldHeader(text = "Add Chat")
+                }
+            },
+            title = {
+                HeaderText(text = "Add Chat")
+            },
+            text = {
+                KilidTextField(
+                    onTextChanged = {
+                        addChatMember.value = it
+                    },
+                    value = addChatMember.value,
+                    label = R.string.add_chat,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                )
+            }
 
+        )
+        FloatingActionButton(onClick = { onFabClick.invoke() },
+            backgroundColor = kilidPrimaryColor,
+            shape = CircleShape,
+            modifier = Modifier.padding(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add, contentDescription = null,
+                tint = Color.White
+            )
+        }
+    }
 
-
+}
 
 
 

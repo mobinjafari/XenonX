@@ -27,12 +27,22 @@ class ProfileViewModel @Inject constructor(
     var number = mutableStateOf("")
     var inProcess = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
+    val registerIn = mutableStateOf(false)
 
     fun uploadProfileImage(uri: Uri ){
       UploadImage(uri){
           createOrUpdateProfile(imageUrl = it.toString())
       }
     }
+
+    fun LogoutUser(){
+        dataStore.firebaseAuth.signOut()
+        registerIn.value = false
+        userData.value = null
+        Toast.makeText(dataStore.context,"Logged Out",Toast.LENGTH_SHORT).show()
+    }
+
+
 
     private fun UploadImage(uri: Uri,onSuccess:(Uri)->Unit) {
         inProcess.value=true

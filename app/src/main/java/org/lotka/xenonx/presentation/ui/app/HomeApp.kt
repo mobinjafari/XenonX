@@ -76,7 +76,8 @@ fun HomeApp(
                     , onToggleTheme = onToggleTheme,
                         onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
                         isDarkTheme = isDarkTheme,
-                        viewModel = plpviewModel
+                        viewModel = plpviewModel,
+                        profileViewModel = profileViewModel
 
                     )
                 }
@@ -110,7 +111,7 @@ fun HomeApp(
                      onBack = { navController.popBackStack() },
                      navController = navController
                      , profileViewModel = profileViewModel,
-                     onLogOut = { navController.popBackStack() }
+
                  )
                 }
 
@@ -124,7 +125,8 @@ fun HomeApp(
                         viewModel = plpviewModel,
                         onNavigateToRecipeDetailScreen =onNavigateToRecipeDetailScreen,
                         isDarkTheme = isDarkTheme,
-                        onToggleTheme = onToggleTheme
+                        onToggleTheme = onToggleTheme,
+                        profileViewModel = profileViewModel
 
                     )
                 }

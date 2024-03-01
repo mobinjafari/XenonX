@@ -38,24 +38,28 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-  @Provides
-  @Singleton
-  fun FirebaseAuth(): FirebaseAuth = Firebase.auth
+//  @Provides
+//  @Singleton
+//  fun FirebaseAuth(): FirebaseAuth = Firebase.auth
+//
 
 
+    @Provides
+    @Singleton
+    fun FirebaseAuthInstance(): FirebaseAuth = FirebaseAuth.getInstance()
 
-  @Provides
-  @Singleton
-  fun FirebaseAuthInstance(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Singleton
+    @Provides
+    fun provideFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
 
-  @Provides
-  @Singleton
-  fun FirebaseFireStore(): FirebaseFirestore = Firebase.firestore
+    @Singleton
+    @Provides
+    fun provideFirebaseStorage(): FirebaseStorage {
+        return Firebase.storage
 
- @Provides
-  @Singleton
-  fun FirebaseStorage(): FirebaseStorage = Firebase.storage
-
+    }
 
 
     @Provides
@@ -82,15 +86,13 @@ object AppModule {
     fun apiExceptionHandler(
         gson: Gson,
         sharedPreferences: SharedPreferences
-    ): NetworkExceptionHandler = NetworkExceptionHandler(gson )
+    ): NetworkExceptionHandler = NetworkExceptionHandler(gson)
 
     @Provides
     @Singleton
     fun provideSharedPreferences(context: Application): SharedPreferences {
         return context.getSharedPreferences(Constants.TAG, Context.MODE_PRIVATE)
     }
-
-
 
 
     @Singleton
@@ -104,7 +106,6 @@ object AppModule {
     fun provideActivity(@ActivityContext activityContext: Context) = activityContext
 
 
-
     @Provides
     @Singleton
     fun provideFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics {
@@ -114,10 +115,12 @@ object AppModule {
     }
 
 
-
     @Singleton
     @Provides
-    fun provideUpdateManager(@ApplicationContext context: Context, analytics: FirebaseAnalytics ): CustomUpdateManager {
-        return CustomUpdateManager(context , analytics)
+    fun provideUpdateManager(
+        @ApplicationContext context: Context,
+        analytics: FirebaseAnalytics
+    ): CustomUpdateManager {
+        return CustomUpdateManager(context, analytics)
     }
 }

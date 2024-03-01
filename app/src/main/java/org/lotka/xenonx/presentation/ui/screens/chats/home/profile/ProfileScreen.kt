@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kilid.portal.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.composables.FastImage
 import org.lotka.xenonx.presentation.composables.HeaderText
 import org.lotka.xenonx.presentation.composables.TextFieldHeader
@@ -39,9 +40,11 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel,
     navController: NavController,
     onBack: () -> Unit,
-    onLogOut: () -> Unit,
+
 ) {
     val imageUrl = profileViewModel.userData.value?.imageUrl
+    val name = profileViewModel.userData.value?.name
+    val number = profileViewModel.userData.value?.number
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -52,7 +55,12 @@ fun ProfileScreen(
             )
         },
         topBar = {
-            ProfileTopBar(onBackPressed = onBack, onSaveClick = {})
+            ProfileTopBar(onBackPressed = onBack, onSaveClick = {
+                profileViewModel.createOrUpdateProfile(
+                    name =name,
+                    number = number,
+                    imageUrl = imageUrl)
+            })
 
         }, drawerElevation = 0.dp,
         drawerGesturesEnabled = false,
@@ -104,7 +112,8 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(40.dp))
 
                     HeaderText(text = "LogOut", modifier = Modifier.clickable {
-                        onLogOut()
+                       profileViewModel.LogoutUser()
+                        navController.navigate(HomeScreensNavigation.LoginScreen.route)
                     }  )
 
                 }
