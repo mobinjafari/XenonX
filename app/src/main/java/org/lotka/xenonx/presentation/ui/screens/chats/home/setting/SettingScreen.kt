@@ -15,8 +15,6 @@ import org.lotka.xenonx.presentation.ui.screens.chats.home.BottomNavigationItemM
 @Composable
 fun SettingScreen(
     onBack: () -> Unit,
-    onToggleTheme: () -> Unit,
-    isDarkTheme: Boolean,
     navController: NavController
 ) {
     Scaffold(

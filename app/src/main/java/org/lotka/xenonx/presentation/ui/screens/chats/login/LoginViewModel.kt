@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import org.lotka.xenonx.domain.usecase.auth.LoginUserUseCase
 import com.kilid.portal.presentation.ui.screens.chats.register.RegisterState
@@ -14,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
 import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.domain.util.ResultState
 import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val registerUseCase: LoginUserUseCase,
-    private val db: FirebaseFirestore
+    private val dataStore: AuthRemoteDataSource
 ) : ViewModel() {
 
 
@@ -78,7 +78,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun LoginProfile(name: String? = null, email: String? = null) {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val uid = dataStore.firebaseAuth.currentUser?.uid
         val data = UserData(
             userId = uid ?: "",
             email = email ?: userData.value?.email,
@@ -87,10 +87,10 @@ class LoginViewModel @Inject constructor(
             )
         uid?.let {
             inProcess.value = true
-            db.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
+            dataStore.firestore.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
                 if (error != null) {
                     Toast.makeText(
-                        db.app.applicationContext, "Error: ${error.message}", Toast.LENGTH_SHORT
+                        dataStore.firestore.app.applicationContext, "Error: ${error.message}", Toast.LENGTH_SHORT
                     )
                     if (value != null) {
                         var user = value?.toObject<UserData>()

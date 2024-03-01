@@ -32,7 +32,8 @@ fun FastImage(
     modifier: Modifier = Modifier
         .background(Color.Gray)
         .size(90.dp),
-    isRoundImage: Boolean = false
+    isRoundImage: Boolean = false,
+    isProfilePicture: Boolean = false
 ) {
 
 
@@ -53,7 +54,9 @@ fun FastImage(
                 .allowHardware(true)
                 .error(R.drawable.nd_noimage)
                 .build(),
-            placeholder = painterResource(R.drawable.mediamodifier_design__4_ ),
+            placeholder = painterResource(
+              if (isProfilePicture)R.drawable.user else
+                R.drawable.mediamodifier_design__4_ ),
             contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -64,3 +67,4 @@ fun FastImage(
     }
 
 }
+

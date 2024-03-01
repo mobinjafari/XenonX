@@ -211,6 +211,8 @@ class PlpViewModel @Inject constructor(
                             updateFeatures = it.data?.versions?.updateFeatures ?: emptyList(),
                         )
                     }
+
+                    else -> {}
                 }
             }
         }

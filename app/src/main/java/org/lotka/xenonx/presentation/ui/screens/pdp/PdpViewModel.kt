@@ -95,6 +95,8 @@ class PdpViewModel @Inject constructor(
                         pdpDetail.value = it.data
                         pdpDetailUiState.emit(UIState.Success)
                     }
+
+                    else -> {}
                 }
             }
 
@@ -117,6 +119,8 @@ class PdpViewModel @Inject constructor(
                     is ResultState.Success -> {
 
                     }
+
+                    else -> {}
                 }
             }
 
@@ -161,6 +165,8 @@ class PdpViewModel @Inject constructor(
                         contactInformation.value = it.data
                         contactInformationUiState.emit(UIState.Success)
                     }
+
+                    else -> {}
                 }
             }
         }

@@ -23,7 +23,9 @@ import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileScreen
-import org.lotka.xenonx.presentation.ui.screens.chats.home.StatusScreen
+import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
+import org.lotka.xenonx.presentation.ui.screens.chats.home.setting.SettingScreen
+
 import org.lotka.xenonx.presentation.ui.screens.chats.login.LoginScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.register.RegisterScreen
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
@@ -42,6 +44,7 @@ fun HomeApp(
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
+    profileViewModel: ProfileViewModel,
 ) {
 
 
@@ -56,7 +59,7 @@ fun HomeApp(
 
         content = { _ ->
             NavHost(navController = navController,
-                startDestination = HomeScreensNavigation.RegisterScreen.route,
+                startDestination = HomeScreensNavigation.HomeChatScreen.route,
                 enterTransition = {
                     // you can change whatever you want transition
                     EnterTransition.None
@@ -65,28 +68,50 @@ fun HomeApp(
                     // you can change whatever you want transition
                     ExitTransition.None
                 }) {
-
                 composable(
-                    route = HomeScreensNavigation.RegisterScreen.route,
+                    route = HomeScreensNavigation.HomeChatScreen.route,
                 ) {
-                    RegisterScreen(navController = navController)
+                    HomeChatScreen(
+                        navController = navController
+                    , onToggleTheme = onToggleTheme,
+                        onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
+                        isDarkTheme = isDarkTheme,
+                        viewModel = plpviewModel
+
+                    )
                 }
 
 
-                composable(
-                    route = HomeScreensNavigation.LoginScreen.route,
-                ) {
-                    LoginScreen(navController = navController)
-                }
+
+//                composable(
+//                    route = HomeScreensNavigation.RegisterScreen.route,
+//                ) {
+//                    RegisterScreen(navController = navController)
+//                }
+
+
+//                composable(
+//                    route = HomeScreensNavigation.LoginScreen.route,
+//                ) {
+//                    LoginScreen(navController = navController)
+//                }
                 composable(
                     route = HomeScreensNavigation.Setting.route,
                 ) {
-                    StatusScreen(navController = navController)
+                   SettingScreen(
+                       navController = navController,
+                        onBack = { navController.popBackStack() }
+                       )
                 }
                 composable(
                     route = HomeScreensNavigation.ProfileScreen.route,
                 ) {
-                  ProfileScreen(navController = navController)
+                 ProfileScreen(
+                     onBack = { navController.popBackStack() },
+                     navController = navController
+                     , profileViewModel = profileViewModel,
+                     onLogOut = { navController.popBackStack() }
+                 )
                 }
 
 

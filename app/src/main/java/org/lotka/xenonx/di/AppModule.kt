@@ -12,6 +12,8 @@ import com.google.firebase.auth.auth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.lotka.xenonx.data.exceptions.NetworkExceptionHandler
@@ -49,6 +51,10 @@ object AppModule {
   @Provides
   @Singleton
   fun FirebaseFireStore(): FirebaseFirestore = Firebase.firestore
+
+ @Provides
+  @Singleton
+  fun FirebaseStorage(): FirebaseStorage = Firebase.storage
 
 
 

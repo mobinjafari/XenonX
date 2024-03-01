@@ -1,20 +1,17 @@
 package org.lotka.xenonx.presentation.ui.screens.chats.register
 
 import android.widget.Toast
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.kilid.portal.presentation.ui.screens.chats.register.RegisterState
-import com.yandex.metrica.impl.ob.db
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
 import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.domain.usecase.auth.RegisterUseCase
 import org.lotka.xenonx.domain.util.ResultState
@@ -23,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val loginUserUseCase: RegisterUseCase,
-    private val db: FirebaseFirestore
+    private val dataStore: AuthRemoteDataSource
 ) : ViewModel() {
 
     var email = mutableStateOf("")
@@ -55,7 +52,7 @@ class RegisterViewModel @Inject constructor(
             _registerState.send(RegisterState(isError = "Please fill all fields"))
             return@launch
         }
-        db.collection(USER_COLLECTION).whereEqualTo(number, number).get().addOnSuccessListener {
+        dataStore.firestore.collection(USER_COLLECTION).whereEqualTo(number, number).get().addOnSuccessListener {
             if (!it.isEmpty) {
                 createOrUpdateProfile()
             }else {
@@ -81,7 +78,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun createOrUpdateProfile(name: String? = null, email: String? = null, number: String? = null, imageUrl: String? = null) {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val uid = dataStore.firebaseAuth.currentUser?.uid
          val data = UserData(
            userId = uid?:"",
            name = name?: userData.value?.name,
@@ -90,10 +87,10 @@ class RegisterViewModel @Inject constructor(
          )
          uid?.let {
              inProcess.value= true
-             db.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
+             dataStore.firestore.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
                  if (error != null) {
                      Toast.makeText(
-                         db.app.applicationContext, "Error: ${error.message}",  Toast.LENGTH_SHORT
+                         dataStore.firestore.app.applicationContext, "Error: ${error.message}",  Toast.LENGTH_SHORT
                      )
                      if (value != null) {
                      var user = value?.toObject<UserData>()

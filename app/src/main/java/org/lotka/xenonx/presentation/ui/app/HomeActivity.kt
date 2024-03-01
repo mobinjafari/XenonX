@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
     private val plpViewModel by viewModels<PlpViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
 
     @Inject
     lateinit var settingsDataStore: SettingsDataStore
@@ -50,6 +52,7 @@ class HomeActivity : AppCompatActivity() {
                     onNavigateToRecipeDetailScreen = { },
                     isDarkTheme = false,
                     onToggleTheme = { },
+                    profileViewModel = profileViewModel
                 )
             }
         }
