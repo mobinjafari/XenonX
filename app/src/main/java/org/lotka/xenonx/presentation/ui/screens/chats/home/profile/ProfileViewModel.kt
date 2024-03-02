@@ -39,6 +39,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+
+
     fun LogoutUser() {
         dataStore.firebaseAuth.signOut()
         registerIn.value = false
@@ -46,64 +48,7 @@ class ProfileViewModel @Inject constructor(
         Toast.makeText(dataStore.context, "Logged Out", Toast.LENGTH_SHORT).show()
     }
 
-    fun onAddChat(number: String) {
-        if (number.isEmpty() or !number.isDigitsOnly()) {
-            Toast.makeText(dataStore.context, "Please Enter Valid Number", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            dataStore.firestore.collection("Chats").where(
-                Filter.or(
-                    Filter.and(
-                        Filter.equalTo("user1.number", number),
-                        Filter.equalTo("user2.number", userData.value?.number)
-                    ),
-                )
-            ).get().addOnSuccessListener {
-                if (it.isEmpty) {
-                    dataStore.firestore.collection(USER_COLLECTION).whereEqualTo("number", number)
-                        .get().addOnSuccessListener {
-                            if (it.isEmpty) {
-                                Toast.makeText(
-                                    dataStore.context,
-                                    "User Not Found",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            } else {
-                                val chatPartner = it.documents[0].toObject<UserData>()
-                                val id = dataStore.firestore.collection("Chats").document().id
-                                val chat = ChatData(
-                                    ChatId = id,
-                                    ChatUser(
-                                        userId = userData.value?.userId,
-                                        name = userData.value?.name,
-                                        imageUrl = userData.value?.imageUrl,
-                                        number = userData.value?.number
-                                    ),
-                                    ChatUser(
-                                        chatPartner?.userId,
-                                        chatPartner?.name,
-                                        chatPartner?.imageUrl,
-                                        chatPartner?.number
-                                    )
 
-                                )
-                                dataStore.firestore.collection("Chats").document(id).set(chat)
-
-
-                                registerIn.value = true
-                            }
-                        }.addOnFailureListener {
-                            Toast.makeText(dataStore.context, "User Already Exists", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                } else {
-                    Toast.makeText(dataStore.context, "User Already Exists", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    }
 
 
     private fun UploadImage(uri: Uri, onSuccess: (Uri) -> Unit) {

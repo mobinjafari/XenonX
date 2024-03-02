@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -295,9 +297,9 @@ fun HomeChatScreen(
                 val showDialog = remember {
                     mutableStateOf(false)
                 }
-                val onFabClick:()->Unit = {  showDialog.value = true}
-                val onDismiss:()->Unit = {  showDialog.value = false}
-                val onAddChat:()->Unit = {
+                val onFabClick: () -> Unit = { showDialog.value = true }
+                val onDismiss: () -> Unit = { showDialog.value = false }
+                val onAddChat: () -> Unit = {
 //                viewModel.onAddChat(it)
                     showDialog.value = false
                 }
@@ -322,7 +324,7 @@ fun HomeChatScreen(
                             onDismiss = { onDismiss() },
                             showDialog = showDialog.value,
                             onAddChat = {
-                            onAddChat()
+                                onAddChat()
                             }
                         )
                     },
@@ -345,16 +347,38 @@ fun HomeChatScreen(
                     content = {
 
                         if (chats.value.isEmpty()) {
-                            Column (modifier = Modifier.fillMaxWidth(),
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
-                                ){
+                            ) {
                                 TextFieldHeader(text = "No Chats Found")
                             }
+                        } else {
+                            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                                items(chats.value) { chat ->
+                                    val chatUser =
+                                        if (chat.user1.userId == userData.value?.userId) {
+                                            chat.user2
+                                        } else {
+                                            chat.user1
+                                        }
+                                    CommonRow(imageUrl = chatUser.imageUrl, name = chatUser.name) {
+
+                                        chat.ChatId?.let {
+                                            NavigateTo(
+                                                navController,
+                                                HomeScreensNavigation.SingleChat.route + "/${chat.user1.userId}"
+                                            )
+
+                                        }
+
+                                    }
+
+
+                                }
+                            }
                         }
-
-
-
 
 
                         val swipeRefreshState = rememberPullRefreshState(
@@ -592,7 +616,6 @@ fun HomeChatScreen(
 }
 
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun fabNavigation(
@@ -630,7 +653,8 @@ fun fabNavigation(
             }
 
         )
-        FloatingActionButton(onClick = { onFabClick.invoke() },
+        FloatingActionButton(
+            onClick = { onFabClick.invoke() },
             backgroundColor = kilidPrimaryColor,
             shape = CircleShape,
             modifier = Modifier.padding(40.dp)

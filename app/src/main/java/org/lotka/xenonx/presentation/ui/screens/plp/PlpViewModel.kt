@@ -1,12 +1,16 @@
 package org.lotka.xenonx.presentation.ui.screens.plp
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.toObject
 import org.lotka.xenonx.domain.enums.FilterTypes
 import org.lotka.xenonx.domain.model.model.location.LocationSearchItem
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
@@ -28,7 +32,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
+import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
+import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatUser
+import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,7 +54,8 @@ class PlpViewModel @Inject constructor(
     private val searchLocationCase: SearchLocationUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val customUpdateManager: CustomUpdateManager,
-    val updateUseCase: GetUpdateUseCase
+    val updateUseCase: GetUpdateUseCase,
+    private val dataStore: AuthRemoteDataSource
 ) : BaseViewModel(dispatchers) {
 
     val filterManager = FilterManager()
@@ -57,7 +66,115 @@ class PlpViewModel @Inject constructor(
     var filterStateVersion by mutableIntStateOf(0)
 
     val inChatProsess = mutableStateOf(false)
-    val chats= mutableStateOf<List<ChatData>>(listOf())
+    val chats = mutableStateOf<List<ChatData>>(listOf())
+    var userName = mutableStateOf("")
+
+    var number = mutableStateOf("")
+    var inProcess = mutableStateOf(false)
+    val userData = mutableStateOf<UserData?>(null)
+    val registerIn = mutableStateOf(false)
+
+
+    fun getUserData(uid:String) {
+        dataStore.firestore.collection(USER_COLLECTION)
+            .document(uid).addSnapshotListener{
+                value, error ->
+                if (error != null) {
+                   Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
+                }
+                if (value != null) {
+                  val user = value.toObject<UserData>()
+                  userData.value = user
+                    inProcess.value = false
+                    populateChats()
+                }
+            }
+
+    }
+
+
+    fun populateChats() {
+        inProcess.value = true
+        dataStore.firestore.collection("Chats").where(
+            Filter.or(
+                Filter.equalTo("user1.userId", userData.value?.userId),
+                Filter.or(Filter.equalTo("user2.userId", userData.value?.userId))
+            )
+        ).addSnapshotListener { value, error ->
+            if (error != null) {
+                if (value != null) {
+                    chats.value = value.documents.mapNotNull { it.toObject<ChatData>() }
+                }
+                inChatProsess.value = false
+
+            }
+
+        }
+    }
+
+
+    fun onAddChat(number: String) {
+        if (number.isEmpty() or !number.isDigitsOnly()) {
+            Toast.makeText(dataStore.context, "Please Enter Valid Number", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            dataStore.firestore.collection("Chats").where(
+                Filter.or(
+                    Filter.and(
+                        Filter.equalTo("user1.number", number),
+                        Filter.equalTo("user2.number", userData.value?.number)
+                    ),
+                )
+            ).get().addOnSuccessListener {
+                if (it.isEmpty) {
+                    dataStore.firestore.collection(USER_COLLECTION).whereEqualTo("number", number)
+                        .get().addOnSuccessListener {
+                            if (it.isEmpty) {
+                                Toast.makeText(
+                                    dataStore.context,
+                                    "User Not Found",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            } else {
+                                val chatPartner = it.documents[0].toObject<UserData>()
+                                val id = dataStore.firestore.collection("Chats").document().id
+                                val chat = ChatData(
+                                    ChatId = id,
+                                    ChatUser(
+                                        userId = userData.value?.userId,
+                                        name = userData.value?.name,
+                                        imageUrl = userData.value?.imageUrl,
+                                        number = userData.value?.number
+                                    ),
+                                    ChatUser(
+                                        chatPartner?.userId,
+                                        chatPartner?.name,
+                                        chatPartner?.imageUrl,
+                                        chatPartner?.number
+                                    )
+
+                                )
+                                dataStore.firestore.collection("Chats").document(id).set(chat)
+
+
+                                registerIn.value = true
+                            }
+                        }.addOnFailureListener {
+                            Toast.makeText(
+                                dataStore.context,
+                                "User Already Exists",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                } else {
+                    Toast.makeText(dataStore.context, "User Already Exists", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
 
 
     private var initialFilterState: String = ""
@@ -70,7 +187,7 @@ class PlpViewModel @Inject constructor(
     fun onFilterBottomSheetClosed() {
         // Compare the current filter state with the stored initial state
         val currentFilterState = serializeFilters(filterManager)
-       if (currentFilterState != initialFilterState) {
+        if (currentFilterState != initialFilterState) {
             // Filters have effectively changed, trigger a new search
             filterStateVersion++
             onTriggerEvent(PlpScreenEvent.NewSearchEvent)
@@ -89,14 +206,16 @@ class PlpViewModel @Inject constructor(
         filterManager.toggleAreaSelectionFilter(area)
         //update searchAreaResult to reflect the new isSelected state
         searchAreaResult.value.forEach { item ->
-            item?.let {locationSearchItem->
-                locationSearchItem.isSelected = filterManager.getSelectedLocations().mapNotNull { it.id }.toSet().contains(locationSearchItem.id)
+            item?.let { locationSearchItem ->
+                locationSearchItem.isSelected =
+                    filterManager.getSelectedLocations().mapNotNull { it.id }.toSet()
+                        .contains(locationSearchItem.id)
             }
         }
         filterStateVersion++
     }
 
-    fun addOrToggleFilter(key : FilterTypes, value: Any) {
+    fun addOrToggleFilter(key: FilterTypes, value: Any) {
         if (key == FilterTypes.LOCATION) {
             return
         }
@@ -104,13 +223,13 @@ class PlpViewModel @Inject constructor(
         filterStateVersion++
     }
 
-    fun removeFilter(key : FilterTypes){
+    fun removeFilter(key: FilterTypes) {
         if (key == FilterTypes.LISTING_TYPE) {
             return
         }
         if (key == FilterTypes.LOCATION) {
             searchAreaResult.value.forEach { item ->
-                item?.let {locationSearchItem->
+                item?.let { locationSearchItem ->
                     locationSearchItem.isSelected = false
                 }
             }
@@ -122,22 +241,24 @@ class PlpViewModel @Inject constructor(
 
     private fun observeUpdateManager() {
         viewModelScope.launch {
-            customUpdateManager.updateStatus.collectLatest{
+            customUpdateManager.updateStatus.collectLatest {
                 Timber.tag("updateLogger").d("updateStatus in main actvity: %s", it.toString())
-                when(it){
+                when (it) {
                     CustomUpdateManager.UpdateType.INDICATED_UPDATE -> {
                         isIndicatedUpdateAvailable = true
                     }
+
                     else -> {}
                 }
             }
         }
 
     }
-    fun clearAllFilters(){
+
+    fun clearAllFilters() {
         //reset searchAreaResult to reflect the new isSelected state
         searchAreaResult.value.forEach { item ->
-            item?.let {locationSearchItem->
+            item?.let { locationSearchItem ->
                 locationSearchItem.isSelected = false
             }
         }
@@ -176,8 +297,6 @@ class PlpViewModel @Inject constructor(
     val sessionUiState = MutableStateFlow<UIState>(UIState.Success)
 
 
-
-
     var halfScreenActiveBottomSheet by mutableStateOf(PlpBottomSheetType.NONE)
     var fullScreenActiveBottomSheet by mutableStateOf(PlpBottomSheetType.NONE)
 
@@ -201,6 +320,7 @@ class PlpViewModel @Inject constructor(
                         Timber.tag("updateLogger").d("error: ${it.error.error}")
                         //could not connect to cdn or there is no internet connection
                     }
+
                     is ResultState.Loading -> {}
                     is ResultState.Success -> {
                         Timber.tag("updateLogger").d("Success: ${it.data.toString()}")
@@ -240,11 +360,11 @@ class PlpViewModel @Inject constructor(
 
 
     fun showBottomSheet(type: PlpBottomSheetType) {
-        viewModelScope.launch{
-            if(type==PlpBottomSheetType.LOCATION_SEARCH){
-                fullScreenActiveBottomSheet=type
-            }else{
-                halfScreenActiveBottomSheet=(type)
+        viewModelScope.launch {
+            if (type == PlpBottomSheetType.LOCATION_SEARCH) {
+                fullScreenActiveBottomSheet = type
+            } else {
+                halfScreenActiveBottomSheet = (type)
             }
         }
     }
@@ -284,11 +404,14 @@ class PlpViewModel @Inject constructor(
                         searchAreaUiState.emit(UIState.Error(it.error.error?.detail.toString()))
                         isActiveJobRunning.value = false
                     }
+
                     is ResultState.Loading -> {
                         searchAreaUiState.emit(UIState.Loading)
                     }
+
                     is ResultState.Success -> {
-                        val selectedAreaIds = filterManager.getSelectedLocations().mapNotNull { it?.id }.toSet()
+                        val selectedAreaIds =
+                            filterManager.getSelectedLocations().mapNotNull { it?.id }.toSet()
                         val updatedList = it.data?.results?.map { item ->
                             if (item != null && item.id in selectedAreaIds) {
                                 item.copy(isSelected = true)
@@ -305,6 +428,7 @@ class PlpViewModel @Inject constructor(
             }
         }
     }
+
     private fun newSearch() {
         page.intValue = 0
         viewModelScope.launch {
@@ -317,12 +441,17 @@ class PlpViewModel @Inject constructor(
                     is ResultState.Error -> {
                         isActiveJobRunning.value = true
                         sessionUiState.emit(UIState.Error(it.error.error?.msg.toString()))
-                        dialogQueue.appendErrorMessage(it.error.error?.msg.toString(), "لطفا وضعیت اینترنت خود را بررسی کنید")
+                        dialogQueue.appendErrorMessage(
+                            it.error.error?.msg.toString(),
+                            "لطفا وضعیت اینترنت خود را بررسی کنید"
+                        )
                         isActiveJobRunning.value = false
                     }
+
                     is ResultState.Loading -> {
                         sessionUiState.emit(UIState.Loading)
                     }
+
                     is ResultState.Success -> {
                         sessions.value = emptyList()
                         sessionUiState.emit(UIState.Success)
@@ -354,10 +483,12 @@ class PlpViewModel @Inject constructor(
                                     decrementPage()
                                     isActiveJobRunning.value = false
                                 }
+
                                 is ResultState.Loading -> {
                                     sessionUiState.emit(UIState.PaginationLoading)
                                     isActiveJobRunning.value = true
                                 }
+
                                 is ResultState.Success -> {
                                     it.data?.plpItemResultModel?.let { it1 -> appendRecipes(recipes = it1) }
                                     totalItems.value = it.data?.total ?: 0
@@ -386,12 +517,15 @@ class PlpViewModel @Inject constructor(
                     is PlpScreenEvent.NewSearchEvent -> {
                         newSearch()
                     }
+
                     is PlpScreenEvent.NextPageEvent -> {
                         nextPage()
                     }
+
                     is PlpScreenEvent.SearchLocationPhrase -> {
                         searchLocationPhrase()
                     }
+
                     else -> {}
                 }
             } catch (e: Exception) {

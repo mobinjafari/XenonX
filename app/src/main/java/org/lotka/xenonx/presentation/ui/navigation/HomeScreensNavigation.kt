@@ -13,6 +13,7 @@ sealed class HomeScreensNavigation(val route: String) {
     object LoginScreen : HomeScreensNavigation(route = "login")
     object Setting : HomeScreensNavigation(route = "setting")
     object ProfileScreen : HomeScreensNavigation(route = "profileScreen")
+    object SingleChat : HomeScreensNavigation(route = "singleChat")
 
 
 }
