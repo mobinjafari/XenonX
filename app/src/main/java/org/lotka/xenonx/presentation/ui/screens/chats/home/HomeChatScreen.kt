@@ -298,11 +298,18 @@ fun HomeChatScreen(
                 val onFabClick:()->Unit = {  showDialog.value = true}
                 val onDismiss:()->Unit = {  showDialog.value = false}
                 val onAddChat:()->Unit = {
-//                   viewModel.onAddChat(it)
+//                viewModel.onAddChat(it)
+                    showDialog.value = false
                 }
 
+
+
+
+
                 Scaffold(
+
                     modifier = Modifier.fillMaxSize(),
+
                     bottomBar = {
                         BottomNavigationItemMenu(
                             selectItem = BottomNavigationItem.CHATLIST,
@@ -311,11 +318,11 @@ fun HomeChatScreen(
                     },
                     floatingActionButton = {
                         fabNavigation(
-                            onFabClick = { },
-                            onDismiss = { },
-                            showDialog = true,
+                            onFabClick = { onFabClick() },
+                            onDismiss = { onDismiss() },
+                            showDialog = showDialog.value,
                             onAddChat = {
-
+                            onAddChat()
                             }
                         )
                     },
@@ -336,6 +343,20 @@ fun HomeChatScreen(
 
 
                     content = {
+
+                        if (chats.value.isEmpty()) {
+                            Column (modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                                ){
+                                TextFieldHeader(text = "No Chats Found")
+                            }
+                        }
+
+
+
+
+
                         val swipeRefreshState = rememberPullRefreshState(
                             refreshing = uiState == UIState.Loading,
                             onRefresh = {
@@ -570,9 +591,6 @@ fun HomeChatScreen(
     }
 }
 
-private fun PlpViewModel.onAddChat(it: Any) {
-
-}
 
 
 @OptIn(ExperimentalComposeUiApi::class)

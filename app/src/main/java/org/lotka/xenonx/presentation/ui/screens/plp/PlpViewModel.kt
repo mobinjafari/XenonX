@@ -410,13 +410,9 @@ class PlpViewModel @Inject constructor(
         setListScrollPosition(position = position)
     }
 
+    fun onAddChat(it: Any) {
 
-
-
-
-
-
-
+    }
 
 
 }

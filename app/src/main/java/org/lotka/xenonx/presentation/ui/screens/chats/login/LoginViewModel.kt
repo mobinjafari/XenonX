@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val registerUseCase: LoginUserUseCase,
-    //private val dataStore: AuthRemoteDataSource
+    private val dataStore: AuthRemoteDataSource
 ) : ViewModel() {
 
 
@@ -48,7 +48,7 @@ class LoginViewModel @Inject constructor(
                     inProcess.value = true
 
                     auth.currentUser?.uid?.let {
-                        //LoginProfile(it)
+                        LoginProfile(it)
                     }
 
                 } else {
@@ -77,37 +77,37 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-//    fun LoginProfile(name: String? = null, email: String? = null) {
-//        val uid = dataStore.firebaseAuth.currentUser?.uid
-//        val data = UserData(
-//            userId = uid ?: "",
-//            email = email ?: userData.value?.email,
-//            name = name ?: userData.value?.name,
-//
-//            )
-//        uid?.let {
-//            inProcess.value = true
-//            dataStore.firestore.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
-//                if (error != null) {
-//                    Toast.makeText(
-//                        dataStore.firestore.app.applicationContext, "Error: ${error.message}", Toast.LENGTH_SHORT
-//                    )
-//                    if (value != null) {
-//                        var user = value?.toObject<UserData>()
-//                        userData.value = user
-//                        inProcess.value = true
-//
-//
-//                    return@addSnapshotListener
-//                } else {
-//                    userData.value = value?.toObject(UserData::class.java)
-//                    inProcess.value = false
-//
-//                }
-//
-//            }
-//
+    fun LoginProfile(name: String? = null, email: String? = null) {
+        val uid = dataStore.firebaseAuth.currentUser?.uid
+        val data = UserData(
+            userId = uid ?: "",
+            email = email ?: userData.value?.email,
+            name = name ?: userData.value?.name,
 
-//        }
-//    }
+            )
+        uid?.let {
+            inProcess.value = true
+            dataStore.firestore.collection(USER_COLLECTION).document(it).addSnapshotListener() { value, error ->
+                if (error != null) {
+                    Toast.makeText(
+                        dataStore.firestore.app.applicationContext, "Error: ${error.message}", Toast.LENGTH_SHORT
+                    )
+                    if (value != null) {
+                        var user = value?.toObject<UserData>()
+                        userData.value = user
+                        inProcess.value = true
+
+                    }
+                    return@addSnapshotListener
+                } else {
+                    userData.value = value?.toObject(UserData::class.java)
+                    inProcess.value = false
+
+                }
+
+            }
+
+
+        }
+    }
 }
