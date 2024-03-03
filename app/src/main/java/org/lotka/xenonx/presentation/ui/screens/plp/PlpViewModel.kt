@@ -1,5 +1,6 @@
 package org.lotka.xenonx.presentation.ui.screens.plp
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -85,6 +86,11 @@ class PlpViewModel @Inject constructor(
     var currentChatMessageListener: ListenerRegistration? = null
     val status = mutableStateOf<List<Status>>(emptyList())
     val inProssessStatus = mutableStateOf(false)
+
+
+    fun uploadstatus(uri: Uri){
+
+    }
 
 
     fun popularMessages(chatId: String) {
