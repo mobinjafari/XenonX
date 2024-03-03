@@ -9,7 +9,6 @@ import org.lotka.xenonx.domain.model.model.update.AppStatusResponse
 import org.lotka.xenonx.domain.util.ResultState
 
 interface HomeDataSource {
-
     suspend fun searchLocation(text: String): ResultState<LocationSearchModel>
 
     suspend fun pdpDetail(id: Int): ResultState<PdpModel>
@@ -18,4 +17,5 @@ interface HomeDataSource {
     suspend fun loadPlpList(page: Int): ResultState<PlpResponseModel>
     suspend fun getContactInformation(identifier: Int): ResultState<ContactInformation>
     suspend fun getAppStatus(): ResultState<AppStatusResponse>
+
 }

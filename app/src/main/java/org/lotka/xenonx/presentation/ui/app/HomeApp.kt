@@ -25,6 +25,7 @@ import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
 import org.lotka.xenonx.presentation.ui.screens.chats.home.setting.SettingScreen
+import org.lotka.xenonx.presentation.ui.screens.chats.home.singlechat.SingleChatScreen
 
 import org.lotka.xenonx.presentation.ui.screens.chats.login.LoginScreen
 import org.lotka.xenonx.presentation.ui.screens.chats.register.RegisterScreen
@@ -129,6 +130,20 @@ fun HomeApp(
                         profileViewModel = profileViewModel
 
                     )
+                }
+
+                composable(
+                    route = HomeScreensNavigation.SingleChat.route,
+                ) {
+                    val chatId=it.arguments?.getString("chatId")
+                    chatId.let {
+                    SingleChatScreen(
+                        navController = navController,
+                        chatId = chatId!!,
+                        plpViewModel = plpviewModel
+                    )
+
+                    }
                 }
 
 

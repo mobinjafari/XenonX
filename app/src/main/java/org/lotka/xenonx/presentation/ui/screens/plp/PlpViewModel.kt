@@ -9,7 +9,9 @@ import androidx.compose.runtime.setValue
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.toObject
 import org.lotka.xenonx.domain.enums.FilterTypes
 import org.lotka.xenonx.domain.model.model.location.LocationSearchItem
@@ -33,11 +35,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
+import org.lotka.xenonx.data.user.CHATS
+import org.lotka.xenonx.data.user.MESSAGES
 import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatUser
+import org.lotka.xenonx.presentation.ui.screens.chats.home.Message
 import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
 import timber.log.Timber
+import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -73,18 +79,55 @@ class PlpViewModel @Inject constructor(
     var inProcess = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
     val registerIn = mutableStateOf(false)
+    var chatMessages by mutableStateOf<List<Message>>(listOf())
+    val inProgressChatMessage = mutableStateOf(false)
+    var currentChatMessageListener: ListenerRegistration? = null
 
 
-    fun getUserData(uid:String) {
-        dataStore.firestore.collection(USER_COLLECTION)
-            .document(uid).addSnapshotListener{
-                value, error ->
+    fun popularMessages(chatId: String) {
+        inProgressChatMessage.value = true
+        currentChatMessageListener = dataStore.firestore.collection(CHATS).document(chatId)
+            .collection(MESSAGES).addSnapshotListener { value, error ->
                 if (error != null) {
-                   Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
+
                 }
                 if (value != null) {
-                  val user = value.toObject<UserData>()
-                  userData.value = user
+                    chatMessages = value.documents.mapNotNull {
+                        it.toObject<Message>()
+                    }.sortedBy { it.time }
+                    inProgressChatMessage.value = false
+                }
+            }
+
+
+    }
+
+    fun depopulateMessages() {
+        chatMessages = listOf()
+        currentChatMessageListener?.remove()
+        inProgressChatMessage.value = false
+    }
+
+
+    fun onSendReplay(chatId: String, message: String) {
+        val calender = Calendar.getInstance().time.toString()
+        val message = Message(sendBy = userData.value?.userId, time = calender, message = message)
+        dataStore.firestore.collection(CHATS).document(chatId)
+            .collection(MESSAGES).document().set(message)
+    }
+
+
+    fun getUserData(uid: String) {
+        dataStore.firestore.collection(USER_COLLECTION)
+            .document(uid).addSnapshotListener { value, error ->
+                if (error != null) {
+                    Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
+
+                }
+                if (value != null) {
+                    val user = value.toObject<UserData>()
+                    userData.value = user
                     inProcess.value = false
                     populateChats()
                 }

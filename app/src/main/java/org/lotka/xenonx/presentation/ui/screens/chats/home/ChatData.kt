@@ -29,6 +29,17 @@ data class ChatUser (
 )
 
 
+data class Message(
+    var sendBy:String?="",
+    var message:String?="",
+    var time:String?=""
+)
+
+
+
+
+
+
 @Composable
 fun CommonRow(
     imageUrl: String?,
