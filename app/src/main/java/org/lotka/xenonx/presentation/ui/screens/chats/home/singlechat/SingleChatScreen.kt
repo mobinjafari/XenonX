@@ -1,6 +1,7 @@
 package org.lotka.xenonx.presentation.ui.screens.chats.home.singlechat
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -30,6 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.lotka.xenonx.presentation.composables.FastImage
@@ -77,6 +81,7 @@ fun SingleChatScreen(
             chatmessage = plpViewModel.chatMessages,
             currentUserId = myUser?.userId?:"")
 
+
         ReplayBox(
             replay = replay, onReplayChange = { replay = it },
             onSendReplayText = onSendReplayText
@@ -93,8 +98,30 @@ fun MessageBox(
     currentUserId:String
 ){
     LazyColumn(modifier = modifier) {
+
+
+
         items(chatmessage) { message ->
-            Text(text = "${message.sendBy}: ${message.message}")
+            val alignment = if (message.sendBy == currentUserId) Alignment.End else Alignment.Start
+            val color = if (message.sendBy == currentUserId) Color(0xFF0F9D58) else Color(0xFFDB4437)
+
+            Column (modifier = modifier.fillMaxWidth().padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+                ){
+
+            }
+
+            Text(text = "${message.sendBy}: ${message.message}", modifier = Modifier.clip(
+                RoundedCornerShape(8.dp)
+            ).background(color)
+            , color = Color.White,
+                fontWeight = FontWeight.Bold
+
+            )
+
+
+
         }
     }
 }

@@ -2,11 +2,14 @@ package org.lotka.xenonx.presentation.ui.screens.chats.home.profile
 
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +19,7 @@ import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
 import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatUser
+import org.lotka.xenonx.presentation.ui.screens.chats.home.Message
 import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
 import java.util.UUID
 import javax.inject.Inject
@@ -33,10 +37,19 @@ class ProfileViewModel @Inject constructor(
     val userData = mutableStateOf<UserData?>(null)
     val registerIn = mutableStateOf(false)
 
+    var currentChatMessageListener: ListenerRegistration? = null
+    var chatMessages by mutableStateOf<List<Message>>(listOf())
+    val inProgressChatMessage = mutableStateOf(false)
+
     fun uploadProfileImage(uri: Uri) {
         UploadImage(uri) {
             createOrUpdateProfile(imageUrl = it.toString())
         }
+    }
+    fun depopulateMessages() {
+        chatMessages = listOf()
+        currentChatMessageListener?.remove()
+        inProgressChatMessage.value = false
     }
 
 
@@ -45,6 +58,8 @@ class ProfileViewModel @Inject constructor(
         dataStore.firebaseAuth.signOut()
         registerIn.value = false
         userData.value = null
+        currentChatMessageListener = null
+        depopulateMessages()
         Toast.makeText(dataStore.context, "Logged Out", Toast.LENGTH_SHORT).show()
     }
 

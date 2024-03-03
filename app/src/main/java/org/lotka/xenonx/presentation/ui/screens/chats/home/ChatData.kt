@@ -35,6 +35,13 @@ data class Message(
     var time:String?=""
 )
 
+data class Status (
+    val user: ChatUser = ChatUser(),
+    val imageUrl: String? = "",
+    val message: String? = "",
+    val time: String? = ""
+)
+
 
 
 

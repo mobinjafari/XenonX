@@ -41,6 +41,7 @@ import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
 import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatUser
 import org.lotka.xenonx.presentation.ui.screens.chats.home.Message
+import org.lotka.xenonx.presentation.ui.screens.chats.home.Status
 import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
 import timber.log.Timber
 import java.util.Calendar
@@ -82,6 +83,8 @@ class PlpViewModel @Inject constructor(
     var chatMessages by mutableStateOf<List<Message>>(listOf())
     val inProgressChatMessage = mutableStateOf(false)
     var currentChatMessageListener: ListenerRegistration? = null
+    val status = mutableStateOf<List<Status>>(emptyList())
+    val inProssessStatus = mutableStateOf(false)
 
 
     fun popularMessages(chatId: String) {
