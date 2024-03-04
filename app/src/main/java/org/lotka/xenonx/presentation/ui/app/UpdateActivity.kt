@@ -79,6 +79,11 @@ class UpdateActivity : AppCompatActivity() {
             isForceUpdate = false
         }
 
+
+
+
+
+
         setContent {
 
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {

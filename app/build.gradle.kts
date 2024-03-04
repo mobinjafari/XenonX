@@ -111,6 +111,15 @@ dependencies {
 //    implementation("com.google.protobuf:protobuf-java:3.19.3")
 
 
+
+    // Navigation
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation ("com.google.accompanist:accompanist-navigation-animation:0.22.0")
+
+    implementation  ("com.onesignal:OneSignal:[3.15.2, 3.99.99]")
+
+
+
     implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("androidx.appcompat:appcompat:1.6.1")
     implementation ("com.google.android.material:material:1.10.0")
@@ -166,6 +175,8 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.6.2")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("androidx.compose.material3:material3-android:1.2.0")
+    implementation("com.google.ai.client.generativeai:generativeai:0.2.1")
     kapt ("androidx.room:room-compiler:2.6.0")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.0")

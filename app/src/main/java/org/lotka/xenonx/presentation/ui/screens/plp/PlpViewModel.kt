@@ -35,15 +35,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.lotka.xenonx.data.repository.auth.AuthRemoteDataSource
+
 import org.lotka.xenonx.data.user.CHATS
 import org.lotka.xenonx.data.user.MESSAGES
 import org.lotka.xenonx.data.user.USER_COLLECTION
-import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
-import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatUser
-import org.lotka.xenonx.presentation.ui.screens.chats.home.Message
-import org.lotka.xenonx.presentation.ui.screens.chats.home.Status
-import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
+
 import timber.log.Timber
 import java.util.Calendar
 import javax.inject.Inject
@@ -63,7 +59,7 @@ class PlpViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val customUpdateManager: CustomUpdateManager,
     val updateUseCase: GetUpdateUseCase,
-    private val dataStore: AuthRemoteDataSource
+
 ) : BaseViewModel(dispatchers) {
 
     val filterManager = FilterManager()
@@ -74,17 +70,17 @@ class PlpViewModel @Inject constructor(
     var filterStateVersion by mutableIntStateOf(0)
 
     val inChatProsess = mutableStateOf(false)
-    val chats = mutableStateOf<List<ChatData>>(listOf())
+
     var userName = mutableStateOf("")
 
     var number = mutableStateOf("")
     var inProcess = mutableStateOf(false)
-    val userData = mutableStateOf<UserData?>(null)
+
     val registerIn = mutableStateOf(false)
-    var chatMessages by mutableStateOf<List<Message>>(listOf())
+
     val inProgressChatMessage = mutableStateOf(false)
     var currentChatMessageListener: ListenerRegistration? = null
-    val status = mutableStateOf<List<Status>>(emptyList())
+
     val inProssessStatus = mutableStateOf(false)
 
 
@@ -92,141 +88,6 @@ class PlpViewModel @Inject constructor(
 
     }
 
-
-    fun popularMessages(chatId: String) {
-        inProgressChatMessage.value = true
-        currentChatMessageListener = dataStore.firestore.collection(CHATS).document(chatId)
-            .collection(MESSAGES).addSnapshotListener { value, error ->
-                if (error != null) {
-                    Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
-
-                }
-                if (value != null) {
-                    chatMessages = value.documents.mapNotNull {
-                        it.toObject<Message>()
-                    }.sortedBy { it.time }
-                    inProgressChatMessage.value = false
-                }
-            }
-
-
-    }
-
-    fun depopulateMessages() {
-        chatMessages = listOf()
-        currentChatMessageListener?.remove()
-        inProgressChatMessage.value = false
-    }
-
-
-    fun onSendReplay(chatId: String, message: String) {
-        val calender = Calendar.getInstance().time.toString()
-        val message = Message(sendBy = userData.value?.userId, time = calender, message = message)
-        dataStore.firestore.collection(CHATS).document(chatId)
-            .collection(MESSAGES).document().set(message)
-    }
-
-
-    fun getUserData(uid: String) {
-        dataStore.firestore.collection(USER_COLLECTION)
-            .document(uid).addSnapshotListener { value, error ->
-                if (error != null) {
-                    Toast.makeText(dataStore.context, error.message, Toast.LENGTH_SHORT).show()
-
-                }
-                if (value != null) {
-                    val user = value.toObject<UserData>()
-                    userData.value = user
-                    inProcess.value = false
-                    populateChats()
-                }
-            }
-
-    }
-
-
-    fun populateChats() {
-        inProcess.value = true
-        dataStore.firestore.collection("Chats").where(
-            Filter.or(
-                Filter.equalTo("user1.userId", userData.value?.userId),
-                Filter.or(Filter.equalTo("user2.userId", userData.value?.userId))
-            )
-        ).addSnapshotListener { value, error ->
-            if (error != null) {
-                if (value != null) {
-                    chats.value = value.documents.mapNotNull { it.toObject<ChatData>() }
-                }
-                inChatProsess.value = false
-
-            }
-
-        }
-    }
-
-
-    fun onAddChat(number: String) {
-        if (number.isEmpty() or !number.isDigitsOnly()) {
-            Toast.makeText(dataStore.context, "Please Enter Valid Number", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            dataStore.firestore.collection("Chats").where(
-                Filter.or(
-                    Filter.and(
-                        Filter.equalTo("user1.number", number),
-                        Filter.equalTo("user2.number", userData.value?.number)
-                    ),
-                )
-            ).get().addOnSuccessListener {
-                if (it.isEmpty) {
-                    dataStore.firestore.collection(USER_COLLECTION).whereEqualTo("number", number)
-                        .get().addOnSuccessListener {
-                            if (it.isEmpty) {
-                                Toast.makeText(
-                                    dataStore.context,
-                                    "User Not Found",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            } else {
-                                val chatPartner = it.documents[0].toObject<UserData>()
-                                val id = dataStore.firestore.collection("Chats").document().id
-                                val chat = ChatData(
-                                    ChatId = id,
-                                    ChatUser(
-                                        userId = userData.value?.userId,
-                                        name = userData.value?.name,
-                                        imageUrl = userData.value?.imageUrl,
-                                        number = userData.value?.number
-                                    ),
-                                    ChatUser(
-                                        chatPartner?.userId,
-                                        chatPartner?.name,
-                                        chatPartner?.imageUrl,
-                                        chatPartner?.number
-                                    )
-
-                                )
-                                dataStore.firestore.collection("Chats").document(id).set(chat)
-
-
-                                registerIn.value = true
-                            }
-                        }.addOnFailureListener {
-                            Toast.makeText(
-                                dataStore.context,
-                                "User Already Exists",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                } else {
-                    Toast.makeText(dataStore.context, "User Already Exists", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    }
 
 
     private var initialFilterState: String = ""
