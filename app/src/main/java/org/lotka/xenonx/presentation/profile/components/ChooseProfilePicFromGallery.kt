@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.profile.components
+package org.lotka.xenonx.presentation.profile.components
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import org.lotka.xenonx.R
 
 
 @Composable

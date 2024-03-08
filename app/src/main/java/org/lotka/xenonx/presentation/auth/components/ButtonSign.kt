@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import org.lotka.xenonx.presentation.theme.theme.spacing
 
 @Composable
@@ -16,7 +17,7 @@ fun ButtonSign(
 ) {
     Button(
     modifier = Modifier
-    .padding(top = MaterialTheme.spacing.large)
+    .padding(top = 8.dp)
     .fillMaxWidth(),
     onClick = {
         onclick()

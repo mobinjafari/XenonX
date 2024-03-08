@@ -1,16 +1,19 @@
-package com.example.chatwithme.presentation.auth
+package org.lotka.xenonx.presentation.auth
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatwithme.domain.model.User
-import com.example.chatwithme.domain.model.UserStatus
-import com.example.chatwithme.domain.usecase.authScreen.AuthUseCases
+
+
 import org.lotka.xenonx.domain.usecase.chat.profileScreen.ProfileScreenUseCases
-import com.example.chatwithme.utils.Response
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.data.util.Response
+import org.lotka.xenonx.domain.model.model.chat.User
+import org.lotka.xenonx.domain.model.model.chat.UserStatus
+import org.lotka.xenonx.domain.usecase.chat.authScreen.AuthUseCases
 import javax.inject.Inject
 
 @HiltViewModel

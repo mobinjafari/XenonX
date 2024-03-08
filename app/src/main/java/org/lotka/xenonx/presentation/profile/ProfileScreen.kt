@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.profile
+package org.lotka.xenonx.presentation.profile
 
 import android.net.Uri
 import androidx.compose.foundation.focusable
@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,15 +18,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.chatwithme.core.SnackbarController
-import com.example.chatwithme.domain.model.User
-import com.example.chatwithme.domain.model.UserStatus
+
 import com.example.chatwithme.presentation.bottomnavigation.BottomNavItem
 import org.lotka.xenonx.presentation.commonComponents.LogOutCustomText
-import com.example.chatwithme.presentation.profile.components.ChooseProfilePicFromGallery
-import com.example.chatwithme.presentation.profile.components.ProfileAppBar
+import org.lotka.xenonx.presentation.profile.components.ChooseProfilePicFromGallery
+import org.lotka.xenonx.presentation.profile.components.ProfileAppBar
 import com.example.chatwithme.presentation.profile.components.ProfileTextField
-import org.lotka.xenonx.presentation.theme.theme.spacing
+import org.lotka.xenonx.core.SnackbarController
+import org.lotka.xenonx.domain.model.model.chat.User
+import org.lotka.xenonx.domain.model.model.chat.UserStatus
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -98,7 +99,7 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.spacing.medium)
+                    .padding(horizontal = 8.dp)
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -115,7 +116,7 @@ fun ProfileScreen(
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(text = email, style = MaterialTheme.typography.titleMedium)
                     ProfileTextField(
                         entry = name,
@@ -130,7 +131,7 @@ fun ProfileScreen(
                     )
                     Button(
                         modifier = Modifier
-                            .padding(top = MaterialTheme.spacing.large)
+                            .padding(top = 8.dp)
                             .fillMaxWidth(),
                         onClick = {
                             if (name != "") {

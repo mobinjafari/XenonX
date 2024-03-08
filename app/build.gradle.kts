@@ -113,10 +113,12 @@ dependencies {
 
 
     // Navigation
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
-    implementation ("com.google.accompanist:accompanist-navigation-animation:0.22.0")
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
 
-    implementation  ("com.onesignal:OneSignal:[3.15.2, 3.99.99]")
+//    implementation ("com.onesignal:OneSignal:[5.0.0, 5.99.99]")
+
+    //One Signal
+    implementation ("com.onesignal:OneSignal:[4.0.0, 4.99.99]")
 
 
 

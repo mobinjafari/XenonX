@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.profile.components
+package org.lotka.xenonx.presentation.profile.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -11,7 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.chatwithme.R
+import org.lotka.xenonx.R
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

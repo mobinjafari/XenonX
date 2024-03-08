@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import org.lotka.xenonx.presentation.theme.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +36,7 @@ fun ProfileTextField(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = MaterialTheme.spacing.medium),
+            .padding(top =8.dp),
 //            .onFocusChanged {
 //                if (isNameChange) {
 ////                    isFocusChange = true

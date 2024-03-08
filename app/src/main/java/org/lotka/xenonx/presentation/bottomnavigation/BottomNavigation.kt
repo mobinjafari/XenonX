@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.bottomnavigation
+package org.lotka.xenonx.presentation.bottomnavigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -14,11 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.chatwithme.presentation.bottomnavigation.BottomNavItem
 import com.example.chatwithme.presentation.bottomnavigation.components.CustomNavItem
-import com.example.chatwithme.presentation.userlist.UserListViewModel
+import org.lotka.xenonx.presentation.userlist.UserListViewModel
 import com.example.chatwithme.presentation.userlist.components.AlertDialogChat
-import org.lotka.xenonx.core.SnackbarController
-import org.lotka.xenonx.presentation.theme.theme.spacing
 
 @Composable
 fun BottomNavigation(
@@ -35,7 +34,7 @@ fun BottomNavigation(
     val toastMessage = userListViewModel.toastMessage.value
     LaunchedEffect(key1 = toastMessage) {
         if (toastMessage != "") {
-            SnackbarController(this).showSnackbar(snackbarHostState, toastMessage, "Close")
+//            SnackbarController(this).showSnackbar(snackbarHostState, toastMessage, "Close")
         }
     }
     AnimatedVisibility(

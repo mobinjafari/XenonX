@@ -1,27 +1,30 @@
-package com.example.chatwithme.presentation.userlist
+package org.lotka.xenonx.presentation.userlist
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.chatwithme.core.SnackbarController
+
 import com.example.chatwithme.presentation.bottomnavigation.BottomNavItem
-import com.example.chatwithme.presentation.profile.components.ProfileAppBar
-import com.example.chatwithme.presentation.userlist.components.AcceptPendingRequestList
+import org.lotka.xenonx.presentation.profile.components.ProfileAppBar
+import org.lotka.xenonx.presentation.userlist.components.AcceptPendingRequestList
 import com.example.chatwithme.presentation.userlist.components.PendingFriendRequestList
-import org.lotka.xenonx.presentation.theme.theme.spacing
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import org.lotka.xenonx.core.SnackbarController
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -86,7 +89,7 @@ fun Userlist(
             SwipeRefreshIndicator(
                 modifier = Modifier
                     .statusBarsPadding()
-                    .padding(top = MaterialTheme.spacing.large),
+                    .padding(top = 8.dp),
                 state = state,
                 refreshTriggerDistance = trigger,
                 fade = true,

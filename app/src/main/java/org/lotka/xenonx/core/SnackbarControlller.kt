@@ -1,5 +1,6 @@
 package org.lotka.xenonx.core
 
+import androidx.compose.material.SnackbarHostState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -15,7 +16,11 @@ class SnackbarController(
 
     fun getScope() = scope
 
-    fun showSnackbar(snackbarHostState: androidx.compose.material3.SnackbarHostState, message: String, actionLabel: String?) {
+    fun showSnackbar(snackbarHostState:
+
+
+
+                     SnackbarHostState, message: String, actionLabel: String?) {
         if (snackbarJob == null) {
             snackbarJob = scope.launch {
                 snackbarHostState.showSnackbar(

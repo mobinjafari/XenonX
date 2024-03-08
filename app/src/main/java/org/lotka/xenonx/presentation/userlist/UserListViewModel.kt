@@ -1,17 +1,20 @@
-package com.example.chatwithme.presentation.userlist
+package org.lotka.xenonx.presentation.userlist
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatwithme.core.Constants
-import com.example.chatwithme.domain.model.FriendListRegister
-import com.example.chatwithme.domain.model.FriendListRow
-import com.example.chatwithme.domain.model.FriendStatus
+
+
 import org.lotka.xenonx.domain.usecase.chat.userListScreen.UserListScreenUseCases
-import com.example.chatwithme.utils.Response
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.core.Constants
+import org.lotka.xenonx.data.util.Response
+import org.lotka.xenonx.domain.model.model.chat.FriendListRegister
+import org.lotka.xenonx.domain.model.model.chat.FriendListRow
+import org.lotka.xenonx.domain.model.model.chat.FriendStatus
 import javax.inject.Inject
 
 @HiltViewModel

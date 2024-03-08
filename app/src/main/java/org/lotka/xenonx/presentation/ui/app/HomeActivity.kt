@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.kilid.portal.presentation.ui.app.HomeApp
 import org.lotka.xenonx.di.DataStoreManager
 import org.lotka.xenonx.presentation.util.CustomUpdateManager
 import org.lotka.xenonx.util.SettingsDataStore
@@ -30,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
     private val plpViewModel by viewModels<PlpViewModel>()
 
 
+
+
     @Inject
     lateinit var settingsDataStore: SettingsDataStore
 
@@ -37,6 +39,11 @@ class HomeActivity : AppCompatActivity() {
     lateinit var dataStoreManager: DataStoreManager
     @Inject
     lateinit var customUpdateManager: CustomUpdateManager
+
+
+    val snackbarHostState = androidx.compose.material.SnackbarHostState()
+    lateinit var keyboardController: SoftwareKeyboardController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,6 +58,8 @@ class HomeActivity : AppCompatActivity() {
                     onNavigateToRecipeDetailScreen = { },
                     isDarkTheme = false,
                     onToggleTheme = { },
+                    snackbarHostState = snackbarHostState,
+                    keyboardController = keyboardController
 
                 )
             }

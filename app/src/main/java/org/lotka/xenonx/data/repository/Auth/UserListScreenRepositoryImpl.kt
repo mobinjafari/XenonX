@@ -1,8 +1,8 @@
 package org.lotka.xenonx.data.repository.Auth
 
-import com.example.chatwithme.domain.model.*
+
 import org.lotka.xenonx.domain.repository.auth.UserListScreenRepository
-import com.example.chatwithme.utils.Response
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import com.onesignal.OneSignal
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.lotka.xenonx.core.Constants.ERROR_MESSAGE
+import org.lotka.xenonx.core.Constants.NO_CHATROOM_IN_FIREBASE_DATABASE
 import org.lotka.xenonx.data.util.Response
 import org.lotka.xenonx.domain.model.model.chat.ChatMessage
 import org.lotka.xenonx.domain.model.model.chat.FriendListRegister

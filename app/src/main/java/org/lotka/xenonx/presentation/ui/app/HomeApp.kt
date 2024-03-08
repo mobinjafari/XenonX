@@ -1,7 +1,6 @@
-package com.kilid.portal.presentation.ui.app
+package org.lotka.xenonx.presentation.ui.app
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -9,8 +8,8 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,12 +22,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.chatwithme.presentation.bottomnavigation.BottomNavItem
-import com.example.chatwithme.presentation.chat.ChatScreen
-import com.example.chatwithme.presentation.profile.ProfileScreen
-import com.example.chatwithme.presentation.userlist.Userlist
+import org.lotka.xenonx.presentation.chat.ChatScreen
+import org.lotka.xenonx.presentation.profile.ProfileScreen
+import org.lotka.xenonx.presentation.userlist.Userlist
 import com.google.accompanist.pager.ExperimentalPagerApi
-import org.lotka.xenonx.presentation.ui.app.HomeActivity
-import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.util.SettingsDataStore

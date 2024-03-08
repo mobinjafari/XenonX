@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.chat
+package org.lotka.xenonx.presentation.chat
 
 import android.widget.Toast
 import androidx.compose.foundation.focusable
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 import com.example.chatwithme.presentation.bottomnavigation.BottomNavItem
+import com.example.chatwithme.presentation.chat.ChatScreenViewModel
 import org.lotka.xenonx.presentation.chat.chatAppBar.ChatAppBar
 import org.lotka.xenonx.presentation.chat.chatAppBar.ProfilePictureDialog
 import org.lotka.xenonx.presentation.chat.chatInput.ChatInput
@@ -38,7 +38,7 @@ fun ChatScreen(
     oneSignalUserId: String,
     chatViewModel: ChatScreenViewModel = hiltViewModel(),
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState,
+    snackbarHostState: androidx.compose.material.SnackbarHostState,
     keyboardController: SoftwareKeyboardController
 ) {
     val toastMessage = chatViewModel.toastMessage.value

@@ -7,11 +7,6 @@ import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.chatwithme.data.repository.ChatScreenRepositoryImpl
-import org.lotka.xenonx.domain.usecase.chat.profileScreen.CreateOrUpdateProfileToFirebase
-import org.lotka.xenonx.domain.usecase.chat.profileScreen.LoadProfileFromFirebase
-import org.lotka.xenonx.domain.usecase.chat.profileScreen.ProfileScreenUseCases
-import org.lotka.xenonx.domain.usecase.chat.profileScreen.SetUserStatusToFirebase
 import com.example.chatwithme.domain.usecase.profileScreen.SignOut
 import com.example.chatwithme.domain.usecase.profileScreen.UploadPictureToFirebase
 import com.example.chatwithme.domain.usecase.userListScreen.AcceptPendingFriendRequestToFirebase
@@ -21,8 +16,15 @@ import com.example.chatwithme.domain.usecase.userListScreen.CreateChatRoomToFire
 import com.example.chatwithme.domain.usecase.userListScreen.CreateFriendListRegisterToFirebase
 import com.example.chatwithme.domain.usecase.userListScreen.LoadAcceptedFriendRequestListFromFirebase
 import com.example.chatwithme.domain.usecase.userListScreen.LoadPendingFriendRequestListFromFirebase
-import org.lotka.xenonx.domain.usecase.chat.userListScreen.OpenBlockedFriendToFirebase
 import com.example.chatwithme.domain.usecase.userListScreen.RejectPendingFriendRequestToFirebase
+import org.lotka.xenonx.data.repository.Auth.ChatScreenRepositoryImpl
+import org.lotka.xenonx.domain.usecase.chat.profileScreen.CreateOrUpdateProfileToFirebase
+import org.lotka.xenonx.domain.usecase.chat.profileScreen.LoadProfileFromFirebase
+import org.lotka.xenonx.domain.usecase.chat.profileScreen.ProfileScreenUseCases
+import org.lotka.xenonx.domain.usecase.chat.profileScreen.SetUserStatusToFirebase
+
+import org.lotka.xenonx.domain.usecase.chat.userListScreen.OpenBlockedFriendToFirebase
+
 import org.lotka.xenonx.domain.usecase.chat.userListScreen.SearchUserFromFirebase
 import org.lotka.xenonx.domain.usecase.chat.userListScreen.UserListScreenUseCases
 import com.google.firebase.Firebase
@@ -74,7 +76,7 @@ import javax.inject.Singleton
 object AppModule {
 
 //  @Provides
-//  @Singleton
+   @Singleton
 //  fun FirebaseAuth(): FirebaseAuth = Firebase.auth
 //
 

@@ -1,11 +1,11 @@
-package com.example.chatwithme.data.repository
+package org.lotka.xenonx.data.repository.Auth
 
-import com.example.chatwithme.domain.model.ChatMessage
+ 
 import org.lotka.xenonx.domain.model.model.chat.FriendStatus
 import org.lotka.xenonx.domain.model.model.chat.MessageStatus
 import org.lotka.xenonx.domain.model.model.chat.User
 import org.lotka.xenonx.domain.repository.auth.ChatScreenRepository
-import com.example.chatwithme.utils.Response
+ 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.json.JSONObject
+import org.lotka.xenonx.core.Constants.ERROR_MESSAGE
+import org.lotka.xenonx.data.util.Response
+import org.lotka.xenonx.domain.model.model.chat.ChatMessage
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton

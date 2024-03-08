@@ -1,4 +1,4 @@
-package com.example.chatwithme.presentation.profile
+package org.lotka.xenonx.presentation.profile
 
 import android.content.ContentValues
 import android.net.Uri
@@ -6,13 +6,15 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatwithme.domain.model.User
-import com.example.chatwithme.domain.model.UserStatus
+
 import org.lotka.xenonx.domain.usecase.chat.profileScreen.ProfileScreenUseCases
-import com.example.chatwithme.utils.Response
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.data.util.Response
+import org.lotka.xenonx.domain.model.model.chat.User
+import org.lotka.xenonx.domain.model.model.chat.UserStatus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,7 +69,8 @@ class ProfileViewModel @Inject constructor(
                         //Picture Uploaded
                         isLoading.value = false
                         updateProfileToFirebase(
-                            User(userProfilePictureUrl = response.data))
+                            User(userProfilePictureUrl = response.data)
+                        )
                     }
                     is Response.Error -> {}
                 }

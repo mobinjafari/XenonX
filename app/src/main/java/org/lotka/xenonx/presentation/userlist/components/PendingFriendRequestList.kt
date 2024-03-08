@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import com.example.chatwithme.domain.model.FriendListRegister
+import androidx.compose.ui.unit.dp
+import org.lotka.xenonx.domain.model.model.chat.FriendListRegister
+
 import org.lotka.xenonx.presentation.theme.theme.spacing
 
 @Composable
@@ -23,13 +25,13 @@ fun PendingFriendRequestList(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    vertical = MaterialTheme.spacing.medium,
+                    vertical = 8.dp,
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = Modifier.padding(MaterialTheme.spacing.small),
+                modifier = Modifier.padding(8.dp),
                 text = item.requesterEmail,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
