@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.lifecycleScope
@@ -47,21 +48,25 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
-            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-                HomeApp(
-                    activity = this@HomeActivity,
-                    viewModel = viewModel,
-                    navController = navController,
-                    settingsDataStore = settingsDataStore,
-                    plpviewModel = plpViewModel,
-                    onNavigateToRecipeDetailScreen = { },
-                    isDarkTheme = false,
-                    onToggleTheme = { },
-                    snackbarHostState = snackbarHostState,
-                    keyboardController = keyboardController
 
-                )
+            val navController = rememberNavController()
+            val keyboardController = LocalSoftwareKeyboardController.current
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                if (keyboardController != null) {
+                    HomeApp(
+                        activity = this@HomeActivity,
+                        viewModel = viewModel,
+                        navController = navController,
+                        settingsDataStore = settingsDataStore,
+                        plpviewModel = plpViewModel,
+                        onNavigateToRecipeDetailScreen = { },
+                        isDarkTheme = false,
+                        onToggleTheme = { },
+                        snackbarHostState = snackbarHostState,
+                        keyboardController = keyboardController
+
+                    )
+                }
             }
         }
 
