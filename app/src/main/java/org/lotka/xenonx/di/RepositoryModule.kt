@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.lotka.xenonx.domain.usecase.chat.profileScreen.ProfileScreenUseCases
 
 import javax.inject.Singleton
 
@@ -19,5 +20,8 @@ object RepositoryModule {
     @Singleton
     fun provideHomeRepository(remoteDataSource: HomeRemoteDataSource): HomeRepository =
         HomeRepositoryImpl(remoteDataSource)
+
+
+
 
 }

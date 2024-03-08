@@ -2,6 +2,8 @@ package org.lotka.xenonx.domain.usecase.chat.profileScreen
 
 import com.example.chatwithme.domain.usecase.profileScreen.SignOut
 import com.example.chatwithme.domain.usecase.profileScreen.UploadPictureToFirebase
+import javax.inject.Singleton
+
 
 data class ProfileScreenUseCases(
     val createOrUpdateProfileToFirebase: CreateOrUpdateProfileToFirebase,

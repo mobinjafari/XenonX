@@ -1,5 +1,6 @@
 package org.lotka.xenonx.di
 
+
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -66,78 +67,107 @@ import org.lotka.xenonx.domain.usecase.chat.chatScreen.InsertMessageToFirebase
 import org.lotka.xenonx.domain.usecase.chat.chatScreen.LoadMessageFromFirebase
 import org.lotka.xenonx.domain.usecase.chat.chatScreen.LoadOpponentProfileFromFirebase
 import javax.inject.Singleton
-
-
-
+import org.lotka.xenonx.data.repository.home.HomeRemoteDataSource
+import org.lotka.xenonx.data.repository.home.HomeRepositoryImpl
+import org.lotka.xenonx.domain.repository.HomeRepository
 
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
-
-
-
-
+object RepositoryssModule {
+    @Provides
+    fun provideFirebaseAuthInstance() = FirebaseAuth.getInstance()
 
     @Provides
-    @Singleton
-    fun resources(application: Application): Resources = application.resources
+    fun provideFirebaseStorageInstance() = FirebaseStorage.getInstance()
 
     @Provides
-    @Singleton
-    fun context(application: Application): Context = application
+    fun provideFirebaseDatabaseInstance() = FirebaseDatabase.getInstance()
 
-
-    @Provides
-    @Singleton
-    fun gson(): Gson = GsonBuilder().create()
+//    @Provides
+//    fun provideSharedPreferences(application: Application) =
+//        application.getSharedPreferences("login", Context.MODE_PRIVATE)
 
     @Provides
-    @Singleton
-    fun dispatcher(dispatchersProvider: DispatchersProviderImpl): DispatchersProvider =
-        dispatchersProvider.dispatchersProvider
-
+    fun providesDataStore(application: Application) = application.dataStore
 
     @Provides
-    @Singleton
-    fun apiExceptionHandler(
-        gson: Gson,
-        sharedPreferences: SharedPreferences
-    ): NetworkExceptionHandler = NetworkExceptionHandler(gson)
+    fun provideAuthRepository(
+        auth: FirebaseAuth,
+    ): AuthScreenRepository = AuthScreenRepositoryImpl(auth)
 
     @Provides
-    @Singleton
-    fun provideSharedPreferences(context: Application): SharedPreferences {
-        return context.getSharedPreferences(Constants.TAG, Context.MODE_PRIVATE)
-    }
-
-
-    @Singleton
-    @Provides
-    fun provideApplication(@ApplicationContext app: Context) =
-        app as BaseAppController
-
-
-    @ActivityScoped
-    @Provides
-    fun provideActivity(@ActivityContext activityContext: Context) = activityContext
-
+    fun provideChatScreenRepository(
+        auth: FirebaseAuth,
+        database: FirebaseDatabase
+    ): ChatScreenRepository = ChatScreenRepositoryImpl(auth, database)
 
     @Provides
-    @Singleton
-    fun provideFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics {
-        val analytics = FirebaseAnalytics.getInstance(context)
-        analytics.setAnalyticsCollectionEnabled(true)
-        return analytics
-    }
+    fun provideProfileScreenRepository(
+        auth: FirebaseAuth,
+        database: FirebaseDatabase,
+        storage: FirebaseStorage
+    ): ProfileScreenRepository = ProfileScreenRepositoryImpl(auth, database, storage)
 
-
-    @Singleton
     @Provides
-    fun provideUpdateManager(
-        @ApplicationContext context: Context,
-        analytics: FirebaseAnalytics
-    ): CustomUpdateManager {
-        return CustomUpdateManager(context, analytics)
-    }
+    fun provideUserListScreenRepository(
+        auth: FirebaseAuth,
+        database: FirebaseDatabase
+    ): UserListScreenRepository = UserListScreenRepositoryImpl(auth, database)
+
+    @Provides
+    fun provideAuthScreenUseCase(authRepository: AuthScreenRepository) = AuthUseCases(
+        isUserAuthenticated = IsUserAuthenticatedInFirebase(authRepository),
+        signIn = SignIn(authRepository),
+        signUp = SignUp(authRepository)
+    )
+
+    @Provides
+    fun provideChatScreenUseCase(chatScreenRepository: ChatScreenRepository) = ChatScreenUseCases(
+        blockFriendToFirebase = BlockFriendToFirebase(chatScreenRepository),
+        insertMessageToFirebase = InsertMessageToFirebase(chatScreenRepository),
+        loadMessageFromFirebase = LoadMessageFromFirebase(chatScreenRepository),
+        opponentProfileFromFirebase = LoadOpponentProfileFromFirebase(chatScreenRepository)
+    )
+
+    @Provides
+    fun provideProfileScreenUseCase(profileScreenRepository: ProfileScreenRepository) =
+        ProfileScreenUseCases(
+            createOrUpdateProfileToFirebase = CreateOrUpdateProfileToFirebase(
+                profileScreenRepository
+            ),
+            loadProfileFromFirebase = LoadProfileFromFirebase(profileScreenRepository),
+            setUserStatusToFirebase = SetUserStatusToFirebase(profileScreenRepository),
+            signOut = SignOut(profileScreenRepository),
+            uploadPictureToFirebase = UploadPictureToFirebase(profileScreenRepository)
+        )
+
+    @Provides
+    fun provideUserListScreenUseCase(userListScreenRepository: UserListScreenRepository) =
+        UserListScreenUseCases(
+            acceptPendingFriendRequestToFirebase = AcceptPendingFriendRequestToFirebase(
+                userListScreenRepository
+            ),
+            checkChatRoomExistedFromFirebase = CheckChatRoomExistedFromFirebase(
+                userListScreenRepository
+            ),
+            checkFriendListRegisterIsExistedFromFirebase = CheckFriendListRegisterIsExistedFromFirebase(
+                userListScreenRepository
+            ),
+            createChatRoomToFirebase = CreateChatRoomToFirebase(userListScreenRepository),
+            createFriendListRegisterToFirebase = CreateFriendListRegisterToFirebase(
+                userListScreenRepository
+            ),
+            loadAcceptedFriendRequestListFromFirebase = LoadAcceptedFriendRequestListFromFirebase(
+                userListScreenRepository
+            ),
+            loadPendingFriendRequestListFromFirebase = LoadPendingFriendRequestListFromFirebase(
+                userListScreenRepository
+            ),
+            openBlockedFriendToFirebase = OpenBlockedFriendToFirebase(userListScreenRepository),
+            rejectPendingFriendRequestToFirebase = RejectPendingFriendRequestToFirebase(
+                userListScreenRepository
+            ),
+            searchUserFromFirebase = SearchUserFromFirebase(userListScreenRepository),
+        )
 }
