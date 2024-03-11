@@ -37,12 +37,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.lotka.xenonx.R
+import org.lotka.xenonx.domain.enums.IsItemPinnedStatus
 import org.lotka.xenonx.domain.enums.ListingType
 import org.lotka.xenonx.domain.enums.UserVerificationStatus
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import org.lotka.xenonx.presentation.composables.FastImage
 import org.lotka.xenonx.presentation.theme.DescriptionTextColor
 import org.lotka.xenonx.presentation.theme.KilidTypography
+import org.lotka.xenonx.presentation.theme.LockIconColor
 import org.lotka.xenonx.presentation.theme.TelegramBackGround
 import org.lotka.xenonx.presentation.theme.TelegramBackGroundColor
 import org.lotka.xenonx.presentation.theme.TelegramColor
@@ -127,6 +129,7 @@ fun PlpItem(
                                 Icon(painter = painterResource(id = R.drawable.lock_account),
                                     contentDescription ="mute",
                                     modifier = Modifier.size(13.dp)
+                                        , tint = LockIconColor
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
@@ -147,7 +150,7 @@ fun PlpItem(
 
                             Spacer(modifier = Modifier.width(4.dp))
 //
-                            var painter = when(item.verificationStatus){
+                            val painter = when(item.verificationStatus){
                                 UserVerificationStatus.NONE -> {
                                     null
                                 }
@@ -183,11 +186,27 @@ fun PlpItem(
                     }
                         //price per meter or rent
                         else{
-                        Text(
-                            text = item.lastMessageText ?: "",
-                            style = KilidTypography.h3,
-                            color = if (isDarkTheme) Color.White else DescriptionTextColor,
-                        )
+                            Row (){
+
+                            if (item.isSentAPicture){
+                                FastImage(imageUrl = R.drawable.ic_ladder_up_yellow
+                                    , modifier = Modifier.size(14.dp))
+                           Spacer(modifier = Modifier.width(4.dp))
+
+                                Text(
+                                    text = item.lastMessageText ?: "",
+                                    style = KilidTypography.h3,
+                                    color = if (isDarkTheme) Color.White else DescriptionTextColor,
+                                )
+                            }else{
+                                Text(
+                                    text = item.lastMessageText ?: "",
+                                    style = KilidTypography.h3,
+                                    color = if (isDarkTheme) Color.White else DescriptionTextColor,
+                                )
+                            }
+                            }
+
                     }
 
 
@@ -206,11 +225,19 @@ fun PlpItem(
                     Row (
 
                     ){
-                        Icon(painter = painterResource(id = R.drawable.markread),
-                            contentDescription =null,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .size(12.dp))
+                        if (item.isUnreadMessage){
+                            Icon(painter = painterResource(id = R.drawable.markread),
+                                contentDescription =null,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .size(12.dp), tint = LockIconColor
+
+                            )
+                        }else{
+//                            mark read icon add
+                        }
+
+
 
                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -222,14 +249,18 @@ fun PlpItem(
                     }
 
 
-                        if(item.isItemPinned){
+                      when(item.isItemPinned){
+                        IsItemPinnedStatus.NONE -> {
+                            null
+                        }
+                        IsItemPinnedStatus.ITEMPINNED -> {
                             Icon(painter = painterResource(id = R.drawable.pinicon),
                                 contentDescription =null,
                                 modifier = Modifier
                                     .size(23.dp)
                                     .clip(shape = CircleShape))
                         }
-                        else{
+                        IsItemPinnedStatus.MESSAGENUMBER -> {
                             Box(
                                 modifier = Modifier
                                     .clip(shape = RoundedCornerShape(12.dp))
@@ -244,12 +275,21 @@ fun PlpItem(
                                     style = KilidTypography.h2,
                                     textAlign = TextAlign.Center,
 
-                                )
+                                    )
                             }
 
 
 
+
+                        }
                     }
+
+
+
+
+                        }
+
+
 
                 }
 
@@ -268,7 +308,7 @@ fun PlpItem(
 
     }
 
-}
+
 
 
 

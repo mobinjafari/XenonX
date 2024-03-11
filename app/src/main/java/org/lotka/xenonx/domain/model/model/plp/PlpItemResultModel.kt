@@ -2,6 +2,7 @@ package org.lotka.xenonx.domain.model.model.plp
 
 
 import androidx.annotation.Keep
+import org.lotka.xenonx.domain.enums.IsItemPinnedStatus
 import org.lotka.xenonx.domain.enums.UserVerificationStatus
 
 @Keep
@@ -20,10 +21,12 @@ data class PlpItemResultModel(
     var lastChatSeenDate: Long?,
     var lastMessageStatus : String?,
     var hasStory : Boolean?,
-    var isItemPinned : Boolean = false,
+    var isItemPinned : IsItemPinnedStatus =IsItemPinnedStatus.NONE,
     var verificationStatus : UserVerificationStatus = UserVerificationStatus.NONE,
     var isSilent: Boolean = false,
     var isTyping: Boolean = false,
-    var isLockAccount: Boolean = false
+    var isLockAccount: Boolean = false,
+    var isSentAPicture: Boolean = false,
+    var isUnreadMessage: Boolean = false
 
     )

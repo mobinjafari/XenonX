@@ -11,9 +11,7 @@ import org.lotka.xenonx.domain.model.model.plp.PlpResponseModel
 import org.lotka.xenonx.domain.model.model.update.AppStatusResponse
 import org.lotka.xenonx.domain.util.ResultState
 import org.lotka.xenonx.domain.util.Sektorum
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.lotka.xenonx.R
+import org.lotka.xenonx.domain.enums.IsItemPinnedStatus
 import org.lotka.xenonx.domain.enums.UserVerificationStatus
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import javax.inject.Inject
@@ -79,8 +77,9 @@ class HomeRemoteDataSource @Inject constructor(
                 hasStory = index % 2 == 1,
                 lastMessageDate = "15:00",
                 isItemPinned = when(index){
-                    0,1,2 -> true
-                    else -> false
+                   1,2,3->IsItemPinnedStatus.ITEMPINNED
+                     4,6-> IsItemPinnedStatus.NONE
+                    else -> IsItemPinnedStatus.MESSAGENUMBER
                                           },
                 verificationStatus =
 
@@ -100,7 +99,14 @@ class HomeRemoteDataSource @Inject constructor(
                 isLockAccount = when(index){
                     0,5 -> true
                     else -> false
-                }
+                },
+                isSentAPicture = when(index){
+                    4,5,6, -> true
+                    else -> false},
+                isUnreadMessage = when(index){
+                    0,2,3,6,8,10,12 -> true
+                    else -> false}
+
 
 
 
