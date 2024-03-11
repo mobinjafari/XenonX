@@ -1,6 +1,7 @@
 package org.lotka.xenonx.presentation.ui.screens.plp.compose
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,11 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+
+import androidx.compose.material.Icon
+
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -25,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
@@ -32,10 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.lotka.xenonx.R
 import org.lotka.xenonx.domain.enums.ListingType
+import org.lotka.xenonx.domain.enums.UserVerificationStatus
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import org.lotka.xenonx.presentation.composables.FastImage
+import org.lotka.xenonx.presentation.theme.DescriptionTextColor
+import org.lotka.xenonx.presentation.theme.KilidTypography
+import org.lotka.xenonx.presentation.theme.TelegramBackGround
 import org.lotka.xenonx.presentation.theme.TelegramBackGroundColor
 import org.lotka.xenonx.presentation.theme.TelegramColor
+import org.lotka.xenonx.presentation.theme.TelegrampinkColor
 import org.lotka.xenonx.presentation.theme.kilidDarkBackgound
 import org.lotka.xenonx.presentation.theme.kilidDarkTexts
 import org.lotka.xenonx.presentation.theme.kilidWhiteBackgound
@@ -82,7 +93,7 @@ fun PlpItem(
 
                 FastImage(
                     modifier = Modifier
-                        .size(60.dp),
+                        .size(56.dp),
                     imageUrl = thumbnailUrl ?: thumbnailDrawable,
                     contentDescription = "Plp Item Image",
                     isRoundImage = true
@@ -101,28 +112,84 @@ fun PlpItem(
 
 
                     Column(
-                        verticalArrangement = Arrangement.Center,
+                        verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(start = 12.dp, top = 12.dp)
-
+                        modifier = Modifier
+                            .padding(start = 11.dp)
+                            .fillMaxWidth()
+                            .height(80.dp)
                     ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically // Align items vertically in the row
+                        ) {
+
+                            if (item.isLockAccount){
+                                Icon(painter = painterResource(id = R.drawable.lock_account),
+                                    contentDescription ="mute",
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = item.userFirstName ?: "",
+                                    style = KilidTypography.h4,
+                                    color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
+                                )
+
+                            }else{
+                                Text(
+                                    text = item.userFirstName ?: "",
+                                    style = KilidTypography.h4,
+                                    color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
+                                )
+                            }
 
 
+
+                            Spacer(modifier = Modifier.width(4.dp))
+//
+                            var painter = when(item.verificationStatus){
+                                UserVerificationStatus.NONE -> {
+                                    null
+                                }
+                                UserVerificationStatus.BLUE_VERIFIED -> {
+                                  R.drawable.pink_verify
+                                }
+                                UserVerificationStatus.GREEN_VERIFIED -> {
+                                R.drawable.vector
+                                }
+                                UserVerificationStatus.ADMIN_VERIFIED -> {
+                                   R.drawable.pink_verify
+                                }
+                            }
+                            FastImage(imageUrl = painter,
+                                modifier = Modifier.size(13.dp)
+                                )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            if (item.isSilent){
+                            Icon(painter = painterResource(id = R.drawable.mute_icon),
+                                contentDescription ="mute",
+                                modifier = Modifier.size(16.dp)
+                                )
+
+                            }
+                        }
+
+                    if (item.isTyping){
                         Text(
-                            text = item.userFirstName ?: "نام ناشناخته",
-                            style = MaterialTheme.typography.h4,
-                            color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
+                            text = "typing...",
+                            style = KilidTypography.h3,
+                            color = if (isDarkTheme) TelegrampinkColor else TelegrampinkColor,
                         )
-
-
+                    }
                         //price per meter or rent
-
-
+                        else{
                         Text(
-                            text = item.lastMessageText ?: "نام ناشناخته",
-                            style = MaterialTheme.typography.h3,
-                            color = if (isDarkTheme) Color.White else Color.Gray,
+                            text = item.lastMessageText ?: "",
+                            style = KilidTypography.h3,
+                            color = if (isDarkTheme) Color.White else DescriptionTextColor,
                         )
+                    }
+
 
 
                     }
@@ -136,28 +203,52 @@ fun PlpItem(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
 
                 ) {
+                    Row (
 
+                    ){
+                        Icon(painter = painterResource(id = R.drawable.markread),
+                            contentDescription =null,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .size(12.dp))
+
+                   Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = item.lastMessageDate.toString(),
-                        color = Color.Gray,
-                        fontSize = 14.sp
+                        color = DescriptionTextColor,
+                        style = KilidTypography.h3
                     )
 
+                    }
 
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clip(shape = CircleShape)
-                            .background(TelegramBackGroundColor),
-                        Alignment.Center
 
-                    ) {
-                        Text(
-                            text = item.numUnreadMessage.toString(),
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Center
-                        )
+                        if(item.isItemPinned){
+                            Icon(painter = painterResource(id = R.drawable.pinicon),
+                                contentDescription =null,
+                                modifier = Modifier
+                                    .size(23.dp)
+                                    .clip(shape = CircleShape))
+                        }
+                        else{
+                            Box(
+                                modifier = Modifier
+                                    .clip(shape = RoundedCornerShape(12.dp))
+                                    .background(color = TelegrampinkColor)
+                                    .size(height = 23.dp, width = 31.dp)
+                                ,
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = item.numUnreadMessage.toString(),
+                                    color = Color.White,
+                                    style = KilidTypography.h2,
+                                    textAlign = TextAlign.Center,
+
+                                )
+                            }
+
+
+
                     }
 
                 }
@@ -167,12 +258,12 @@ fun PlpItem(
 
 
         }
-        Spacer(modifier = Modifier.height(12.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 80.dp)
-        )
+        Spacer(modifier = Modifier.height(11.dp))
+//        Divider(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(start = 80.dp)
+//        )
 
 
     }

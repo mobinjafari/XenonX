@@ -13,6 +13,8 @@ import org.lotka.xenonx.domain.util.ResultState
 import org.lotka.xenonx.domain.util.Sektorum
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.lotka.xenonx.R
+import org.lotka.xenonx.domain.enums.UserVerificationStatus
 import org.lotka.xenonx.domain.model.model.plp.PlpItemResultModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -76,6 +78,32 @@ class HomeRemoteDataSource @Inject constructor(
                 lastMessageStatus = "sent",
                 hasStory = index % 2 == 1,
                 lastMessageDate = "15:00",
+                isItemPinned = when(index){
+                    0,1,2 -> true
+                    else -> false
+                                          },
+                verificationStatus =
+
+                when (index) {
+                    0 -> UserVerificationStatus.BLUE_VERIFIED
+                    4 -> UserVerificationStatus.GREEN_VERIFIED
+                    else -> UserVerificationStatus.NONE
+                }
+              , isSilent = when(index){
+                  0,4,7 -> true
+                  else -> false
+              },
+                isTyping = when(index){
+                    0,1,2 -> true
+                    else -> false
+                },
+                isLockAccount = when(index){
+                    0,5 -> true
+                    else -> false
+                }
+
+
+
             )
         }
 

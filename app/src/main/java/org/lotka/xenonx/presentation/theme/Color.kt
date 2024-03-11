@@ -69,6 +69,11 @@ val kilidPrimaryColor = Color(0xFF229ED9)
 val newSecondaryColor = Color(0xFFD0D5DD)
 val TelegramColor = Color(0xFF229ED9 )
 val TelegramBackGroundColor = Color(0xFF2AABEE )
+val DescriptionTextColor = Color(0xFF8D8E90 )
+val TelegramBackGround = Color(0xFF272438 )
+val TelegrampinkColor = Color(0xFF8270E2)
+
+
 
 
 //new design text colors

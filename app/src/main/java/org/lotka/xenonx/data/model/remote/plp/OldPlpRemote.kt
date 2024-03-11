@@ -3,6 +3,7 @@ package org.lotka.xenonx.data.model.remote.plp
 
 import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import org.lotka.xenonx.R
 import org.lotka.xenonx.data.base.ResponseObject
 import org.lotka.xenonx.domain.enums.LandUseTypes
 import org.lotka.xenonx.domain.enums.ListingType
@@ -37,6 +38,8 @@ data class OldPlpRemote(
                         lastMessageStatus = res?.attributes?.listingType,
                         lastMessageType = res?.attributes?.landuseType,
                         hasStory = res?.attributes?.featured,
+
+
 
                     )
                 },

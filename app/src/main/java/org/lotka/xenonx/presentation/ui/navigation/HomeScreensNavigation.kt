@@ -9,8 +9,6 @@ sealed class HomeScreensNavigation(val route: String) {
     object pdp : HomeScreensNavigation(route = "pdp")
 
     object HomeChatScreen : HomeScreensNavigation(route = "HomeChatScreen")
-    object RegisterScreen : HomeScreensNavigation(route = "Register")
-    object LoginScreen : HomeScreensNavigation(route = "login")
     object Setting : HomeScreensNavigation(route = "setting")
     object ProfileScreen : HomeScreensNavigation(route = "profileScreen")
 

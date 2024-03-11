@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,6 +28,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,11 +45,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlinx.serialization.json.Json.Default.configuration
 import org.lotka.xenonx.presentation.composables.etc.MobinButton
 import org.lotka.xenonx.presentation.composables.etc.general.LottieLoading
 import org.lotka.xenonx.presentation.theme.KilidTypography
+import org.lotka.xenonx.presentation.theme.TelegramBackGround
 import org.lotka.xenonx.presentation.theme.TelegramColor
+import org.lotka.xenonx.presentation.theme.TelegrampinkColor
 import org.lotka.xenonx.presentation.theme.kilidDarkBackgound
 import org.lotka.xenonx.presentation.theme.kilidDarkTexts
 import org.lotka.xenonx.presentation.theme.kilidPrimaryColor
@@ -72,16 +73,17 @@ fun HomeTabRow(
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
 ) {
-    var selectedTabIndex by remember { mutableStateOf(1) }
+    var selectedTabIndex by remember { mutableIntStateOf(1) }
 
     val tabs = listOf(
-        "Personal",
-        "All Chats",
+        "Pv",
+        "All",
+
     )
 
     val tabContent: @Composable (Int) -> Unit = { tabIndex ->
         when (tabIndex) {
-            1 -> AllChats(
+            1 -> All(
                 navController = navController,
                 viewModel = viewModel,
                 onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
@@ -89,13 +91,14 @@ fun HomeTabRow(
                 isDarkTheme = isDarkTheme
             )
 
-            0 -> Personal(
+            0 -> Pv(
                 navController = navController,
                 viewModel = viewModel,
                 onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
                 onToggleTheme = onToggleTheme,
                 isDarkTheme = isDarkTheme
             )
+
         }
     }
 
@@ -106,7 +109,7 @@ fun HomeTabRow(
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            contentColor = TelegramColor,
+            contentColor = TelegrampinkColor,
             divider = {
 
                 Divider(color = Color.Gray, thickness = 1.dp)
@@ -114,7 +117,7 @@ fun HomeTabRow(
             indicator = { tabPositions ->
 
                 TabRowDefaults.Indicator(
-                    color = TelegramColor,
+                    color = TelegrampinkColor,
                     height = 4.dp,
                     modifier = Modifier
                         .width(10.dp) // Set the width to 10dp
@@ -146,7 +149,7 @@ fun HomeTabRow(
                 ) {
                     Text(
                         text = title,
-                        color = if (selectedTabIndex == index) TelegramColor else Color.Gray,
+                        color = if (selectedTabIndex == index) TelegrampinkColor else Color.Gray,
                         modifier = Modifier.padding(8.dp),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -161,9 +164,15 @@ fun HomeTabRow(
     }
 }
 
+@Composable
+fun Pv() {
+    TODO("Not yet implemented")
+}
+
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Personal(
+fun Pv(
     navController: NavController,
     viewModel: PlpViewModel,
     onNavigateToRecipeDetailScreen: (String) -> Unit,
@@ -186,7 +195,7 @@ fun Personal(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .background(if (isDarkTheme) kilidDarkBackgound else kilidWhiteBackgound),
+            .background(if (isDarkTheme) TelegramBackGround else TelegramBackGround),
         state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -365,7 +374,7 @@ fun Personal(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AllChats(
+fun All(
     navController: NavController,
     viewModel: PlpViewModel,
     onNavigateToRecipeDetailScreen: (String) -> Unit,
@@ -565,6 +574,7 @@ fun AllChats(
 
 
     }
+
 }
 
 

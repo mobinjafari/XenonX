@@ -88,13 +88,11 @@ import org.lotka.xenonx.presentation.ui.screens.plp.bottom_sheet.ListingItemBott
 import org.lotka.xenonx.presentation.ui.screens.plp.bottom_sheet.PlpBottomSheetType
 import org.lotka.xenonx.presentation.ui.screens.plp.bottom_sheet.SearchCityBottomSheet
 import org.lotka.xenonx.presentation.util.UIState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.presentation.composables.HeaderText
 import org.lotka.xenonx.presentation.composables.TextFieldHeader
 import org.lotka.xenonx.presentation.composables.etc.KilidTextField
-import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
-import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
+import org.lotka.xenonx.presentation.theme.TelegramBackGround
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreenEvent
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.presentation.ui.screens.plp.compose.HomeTabRow
@@ -111,7 +109,6 @@ import java.util.Collections.emptyList
 fun HomeChatScreen(
     navController: NavController,
     viewModel: PlpViewModel,
-    profileViewModel: ProfileViewModel,
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
@@ -194,7 +191,7 @@ fun HomeChatScreen(
 
     ModalBottomSheetLayout(
         sheetState = fullScreenBottomSheet,
-        sheetBackgroundColor = Color.Transparent,
+        sheetBackgroundColor = TelegramBackGround,
         scrimColor = colorResource(id = R.color.transparent_grey),
         sheetElevation = 30.dp,
         sheetContent = {
@@ -290,34 +287,22 @@ fun HomeChatScreen(
                 dialogQueue = dialogQueue.queue.value
 
             ) {
-                val chats = viewModel.chats
-                val userData = profileViewModel.userData
+
                 val showDialog = remember {
                     mutableStateOf(false)
                 }
-                val onFabClick:()->Unit = {  showDialog.value = true}
-                val onDismiss:()->Unit = {  showDialog.value = false}
-                val onAddChat:()->Unit = {
-//                   viewModel.onAddChat(it)
-                }
+
 
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                        .background(color = TelegramBackGround)
+                    ,
                     bottomBar = {
-                        BottomNavigationItemMenu(
-                            selectItem = BottomNavigationItem.CHATLIST,
-                            navController = navController
-                        )
+
+
                     },
                     floatingActionButton = {
-                        fabNavigation(
-                            onFabClick = { },
-                            onDismiss = { },
-                            showDialog = true,
-                            onAddChat = {
 
-                            }
-                        )
                     },
                     topBar = {
                         HomeTopBar(
@@ -343,7 +328,7 @@ fun HomeChatScreen(
                             }
                         )
 
-                        Column(modifier = Modifier.background(if (isDarkTheme) kilidDarkBackgound else kilidWhiteBackgound)) {
+                        Column(modifier = Modifier.background(if (isDarkTheme) TelegramBackGround else kilidWhiteBackgound)) {
 
 
                             val context = LocalContext.current
@@ -569,63 +554,63 @@ fun HomeChatScreen(
 
     }
 }
+//
+//private fun PlpViewModel.onAddChat(it: Any) {
+//
+//}
 
-private fun PlpViewModel.onAddChat(it: Any) {
-
-}
-
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun fabNavigation(
-    onFabClick: () -> Unit,
-    onDismiss: () -> Unit,
-    showDialog: Boolean,
-    onAddChat: (String) -> Unit
-) {
-
-    val addChatMember = remember {
-        mutableStateOf("")
-    }
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { onDismiss.invoke() },
-            buttons = {
-                Button(onClick = { onAddChat.invoke(addChatMember.value) }
-                ) {
-                    TextFieldHeader(text = "Add Chat")
-                }
-            },
-            title = {
-                HeaderText(text = "Add Chat")
-            },
-            text = {
-                KilidTextField(
-                    onTextChanged = {
-                        addChatMember.value = it
-                    },
-                    value = addChatMember.value,
-                    label = R.string.add_chat,
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                )
-            }
-
-        )
-        FloatingActionButton(onClick = { onFabClick.invoke() },
-            backgroundColor = kilidPrimaryColor,
-            shape = CircleShape,
-            modifier = Modifier.padding(40.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Add, contentDescription = null,
-                tint = Color.White
-            )
-        }
-    }
-
-}
-
+//
+//@OptIn(ExperimentalComposeUiApi::class)
+//@Composable
+//fun fabNavigation(
+//    onFabClick: () -> Unit,
+//    onDismiss: () -> Unit,
+//    showDialog: Boolean,
+//    onAddChat: (String) -> Unit
+//) {
+//
+//    val addChatMember = remember {
+//        mutableStateOf("")
+//    }
+//    if (showDialog) {
+//        AlertDialog(
+//            onDismissRequest = { onDismiss.invoke() },
+//            buttons = {
+//                Button(onClick = { onAddChat.invoke(addChatMember.value) }
+//                ) {
+//                    TextFieldHeader(text = "Add Chat")
+//                }
+//            },
+//            title = {
+//                HeaderText(text = "Add Chat")
+//            },
+//            text = {
+//                KilidTextField(
+//                    onTextChanged = {
+//                        addChatMember.value = it
+//                    },
+//                    value = addChatMember.value,
+//                    label = R.string.add_chat,
+//                    keyboardType = KeyboardType.Text,
+//                    imeAction = ImeAction.Done
+//                )
+//            }
+//
+//        )
+//        FloatingActionButton(onClick = { onFabClick.invoke() },
+//            backgroundColor = kilidPrimaryColor,
+//            shape = CircleShape,
+//            modifier = Modifier.padding(40.dp)
+//        ) {
+//            Icon(
+//                imageVector = Icons.Filled.Add, contentDescription = null,
+//                tint = Color.White
+//            )
+//        }
+//    }
+//
+//}
+//
 
 
 

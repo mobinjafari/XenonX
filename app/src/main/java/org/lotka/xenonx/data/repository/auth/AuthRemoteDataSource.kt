@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import org.lotka.xenonx.data.user.USER_COLLECTION
 import org.lotka.xenonx.domain.util.ResultState
 import org.lotka.xenonx.domain.util.ResultState2
-import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
+
 import org.lotka.xenonx.util.AuthResult2
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -52,26 +52,7 @@ class AuthRemoteDataSource @Inject constructor(
         }
     }
 
-    override suspend fun createOrUpdateProfile(
-        name: String?,
-        email: String?,
-        number: String?,
-        imageUrl: String?
-    ): ResultState<UserData> {
-            val uid = FirebaseAuth.getInstance().currentUser?.uid
-            return try {
-                if (uid != null) {
-                    val userData = UserData(uid, name, number, imageUrl)
-                    // Update user data in Firestore
-                    firestore.collection(USER_COLLECTION).document(uid).set(userData).await()
-                    ResultState.Success(userData)
-                } else {
-                    ResultState2.Error(Exception("User not authenticated"))
-                }
-            } catch (e: Exception) {
-                ResultState2.Error(Exception("User not authenticated"))
-            }
-        }
+
     }
 
 

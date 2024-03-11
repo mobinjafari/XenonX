@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.lotka.xenonx.presentation.ui.screens.chats.home.ChatData
+
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -57,7 +57,7 @@ class PlpViewModel @Inject constructor(
     var filterStateVersion by mutableIntStateOf(0)
 
     val inChatProsess = mutableStateOf(false)
-    val chats= mutableStateOf<List<ChatData>>(listOf())
+
 
 
     private var initialFilterState: String = ""

@@ -5,7 +5,7 @@ import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.flow.Flow
 import org.lotka.xenonx.domain.repository.AuthRepository
 import org.lotka.xenonx.domain.util.ResultState
-import org.lotka.xenonx.presentation.ui.screens.chats.register.UserData
+
 import org.lotka.xenonx.util.AuthResult2
 import javax.inject.Inject
 import javax.inject.Singleton

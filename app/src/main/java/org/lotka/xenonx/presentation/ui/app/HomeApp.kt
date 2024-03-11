@@ -22,12 +22,9 @@ import org.lotka.xenonx.presentation.ui.app.HomeActivity
 import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
-import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileScreen
-import org.lotka.xenonx.presentation.ui.screens.chats.home.profile.ProfileViewModel
-import org.lotka.xenonx.presentation.ui.screens.chats.home.setting.SettingScreen
+import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreen
 
-import org.lotka.xenonx.presentation.ui.screens.chats.login.LoginScreen
-import org.lotka.xenonx.presentation.ui.screens.chats.register.RegisterScreen
+
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.util.SettingsDataStore
 
@@ -44,7 +41,7 @@ fun HomeApp(
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
-    profileViewModel: ProfileViewModel,
+
 ) {
 
 
@@ -59,7 +56,7 @@ fun HomeApp(
 
         content = { _ ->
             NavHost(navController = navController,
-                startDestination = HomeScreensNavigation.HomeChatScreen.route,
+                startDestination = HomeScreensNavigation.plp.route,
                 enterTransition = {
                     // you can change whatever you want transition
                     EnterTransition.None
@@ -69,15 +66,15 @@ fun HomeApp(
                     ExitTransition.None
                 }) {
                 composable(
-                    route = HomeScreensNavigation.HomeChatScreen.route,
+                    route = HomeScreensNavigation.plp.route,
                 ) {
-                    HomeChatScreen(
+                    PlpScreen(
                         navController = navController
-                    , onToggleTheme = onToggleTheme,
+                    ,   onToggleTheme = onToggleTheme,
                         onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen,
                         isDarkTheme = isDarkTheme,
                         viewModel = plpviewModel,
-                        profileViewModel = profileViewModel
+
 
                     )
                 }
@@ -96,40 +93,10 @@ fun HomeApp(
 //                ) {
 //                    LoginScreen(navController = navController)
 //                }
-                composable(
-                    route = HomeScreensNavigation.Setting.route,
-                ) {
-                   SettingScreen(
-                       navController = navController,
-                        onBack = { navController.popBackStack() }
-                       )
-                }
-                composable(
-                    route = HomeScreensNavigation.ProfileScreen.route,
-                ) {
-                 ProfileScreen(
-                     onBack = { navController.popBackStack() },
-                     navController = navController
-                     , profileViewModel = profileViewModel,
-
-                 )
-                }
 
 
 
-                composable(
-                    route = HomeScreensNavigation.HomeChatScreen.route,
-                ) {
-                    HomeChatScreen(
-                        navController = navController,
-                        viewModel = plpviewModel,
-                        onNavigateToRecipeDetailScreen =onNavigateToRecipeDetailScreen,
-                        isDarkTheme = isDarkTheme,
-                        onToggleTheme = onToggleTheme,
-                        profileViewModel = profileViewModel
 
-                    )
-                }
 
 
 

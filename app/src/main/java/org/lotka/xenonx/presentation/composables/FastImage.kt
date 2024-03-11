@@ -37,34 +37,36 @@ fun FastImage(
 ) {
 
 
+    if (imageUrl!=null){
 
-
-    Box(
-        modifier = Modifier
-//            .background(Color.Gray)
-            .then(modifier)
-    ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(false)
-                .memoryCachePolicy(CachePolicy.ENABLED)
-                .diskCachePolicy(CachePolicy.DISABLED)
-                .crossfade(false)
-                .allowHardware(true)
-                .error(R.drawable.nd_noimage)
-                .build(),
-            placeholder = painterResource(
-              if (isProfilePicture)R.drawable.user else
-                R.drawable.mediamodifier_design__4_ ),
-            contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
+        Box(
             modifier = Modifier
-                .matchParentSize()
-                .clip(shape = if (isRoundImage) CircleShape else RoundedCornerShape(8.dp))
-            // This makes the AsyncImage fill the Box
-        )
+//            .background(Color.Gray)
+                .then(modifier)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(false)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.DISABLED)
+                    .crossfade(false)
+                    .allowHardware(true)
+                    .error(R.drawable.nd_noimage)
+                    .build(),
+                placeholder = painterResource(
+                    if (isProfilePicture)R.drawable.user else
+                        R.drawable.mediamodifier_design__4_ ),
+                contentDescription = contentDescription,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .matchParentSize()
+                    .clip(shape = if (isRoundImage) CircleShape else RoundedCornerShape(8.dp))
+                // This makes the AsyncImage fill the Box
+            )
+        }
     }
+
 
 }
 
