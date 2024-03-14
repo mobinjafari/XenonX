@@ -109,6 +109,7 @@ fun PlpScreen(
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
+
 ) {
 
     var canPop by remember { mutableStateOf(false) }
@@ -561,7 +562,7 @@ fun PlpScreen(
                                                                 viewModel.onHalfScreenBottomSheetOpened()
                                                                 viewModel.savedScrollIndex = index
                                                                 val route =
-                                                                    HomeScreensNavigation.pdp.route + "/${it}"
+                                                                    HomeScreensNavigation.plp.route + "/${it}"
                                                                 onNavigateToRecipeDetailScreen(route)
                                                             },
                                                             onLadderUpClick = {},

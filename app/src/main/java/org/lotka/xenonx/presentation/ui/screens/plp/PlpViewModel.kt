@@ -49,6 +49,8 @@ class PlpViewModel @Inject constructor(
     val updateUseCase: GetUpdateUseCase
 ) : BaseViewModel(dispatchers) {
 
+     var item: PlpItemResultModel? = null
+
     val filterManager = FilterManager()
     var isIndicatedUpdateAvailable by mutableStateOf(false)
     val searchAreaResult = MutableStateFlow<List<LocationSearchItem?>>(emptyList())

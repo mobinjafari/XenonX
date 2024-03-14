@@ -1,0 +1,80 @@
+package org.lotka.xenonx.presentation.ui.screens.plp.SingleChatScreen
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicTextField
+
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.lotka.xenonx.R
+
+@Composable
+fun SingleChatBottomBar(
+
+) {
+
+    Row (modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.Absolute.Left,
+        verticalAlignment = Alignment.CenterVertically
+
+        ){
+        Icon(
+            painter  = painterResource(id = R.drawable.emogi_icon),
+            contentDescription = "Back",
+            modifier = Modifier
+                .padding(start = 13.dp)
+                .clickable { }
+                .size(27.dp)
+        )
+
+        Spacer(   modifier = Modifier.width(4.dp))
+
+//        in there we need TextField not text I use just for Test
+            Text(text = "Message ", fontSize = 18.sp)
+
+        Spacer(   modifier = Modifier.weight(3f))
+        Icon(
+            painter  = painterResource(id = R.drawable.choose_image),
+            contentDescription = "Back",
+            modifier = Modifier
+                .clickable { }
+                .size(27.dp)
+        )
+        Spacer(   modifier = Modifier.width(18.dp))
+        Icon(
+            painter  = painterResource(id = R.drawable.voice_send),
+            contentDescription = "Back",
+            modifier = Modifier
+                .clickable { }
+                .size(27.dp)
+        )
+
+
+
+
+
+
+    }
+
+}

@@ -125,22 +125,24 @@ fun PlpItem(
                             verticalAlignment = Alignment.CenterVertically // Align items vertically in the row
                         ) {
 
-                            if (item.isLockAccount){
-                                Icon(painter = painterResource(id = R.drawable.lock_account),
-                                    contentDescription ="mute",
-                                    modifier = Modifier.size(13.dp)
-                                        , tint = LockIconColor
+                            if (item.isLockAccount) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.lock_account),
+                                    contentDescription = "mute",
+                                    modifier = Modifier.size(13.dp), tint = LockIconColor
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = item.userFirstName ?: "",
+                                    text = item.userFirstName?.chunked(10) { it.trim() }
+                                        ?.joinToString("\n") ?: "",
                                     style = KilidTypography.h4,
                                     color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
                                 )
 
-                            }else{
+                            } else {
                                 Text(
-                                    text = item.userFirstName ?: "",
+                                    text = item.userFirstName?.chunked(10) { it.trim() }
+                                        ?.joinToString("\n") ?: "",
                                     style = KilidTypography.h4,
                                     color = if (isDarkTheme) kilidDarkTexts else kilidWhiteTexts,
                                 )
@@ -150,65 +152,73 @@ fun PlpItem(
 
                             Spacer(modifier = Modifier.width(4.dp))
 //
-                            val painter = when(item.verificationStatus){
+                            val painter = when (item.verificationStatus) {
                                 UserVerificationStatus.NONE -> {
                                     null
                                 }
+
                                 UserVerificationStatus.BLUE_VERIFIED -> {
-                                  R.drawable.pink_verify
+                                    R.drawable.pink_verify
                                 }
+
                                 UserVerificationStatus.GREEN_VERIFIED -> {
-                                R.drawable.vector
+                                    R.drawable.vector
                                 }
+
                                 UserVerificationStatus.ADMIN_VERIFIED -> {
-                                   R.drawable.pink_verify
+                                    R.drawable.pink_verify
                                 }
                             }
-                            FastImage(imageUrl = painter,
+                            FastImage(
+                                imageUrl = painter,
                                 modifier = Modifier.size(13.dp)
-                                )
+                            )
                             Spacer(modifier = Modifier.width(4.dp))
-                            if (item.isSilent){
-                            Icon(painter = painterResource(id = R.drawable.mute_icon),
-                                contentDescription ="mute",
-                                modifier = Modifier.size(16.dp)
+                            if (item.isSilent) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.mute_icon),
+                                    contentDescription = "mute",
+                                    modifier = Modifier.size(16.dp)
                                 )
 
                             }
                         }
 
-                    if (item.isTyping){
-                        Text(
-                            text = "typing...",
-                            style = KilidTypography.h3,
-                            color = if (isDarkTheme) TelegrampinkColor else TelegrampinkColor,
-                        )
-                    }
+                        if (item.isTyping) {
+                            Text(
+                                text = "typing...",
+                                style = KilidTypography.h3,
+                                color = if (isDarkTheme) TelegrampinkColor else TelegrampinkColor,
+                            )
+                        }
                         //price per meter or rent
-                        else{
-                            Row (){
+                        else {
+                            Row() {
 
-                            if (item.isSentAPicture){
-                                FastImage(imageUrl = R.drawable.ic_ladder_up_yellow
-                                    , modifier = Modifier.size(14.dp))
-                           Spacer(modifier = Modifier.width(4.dp))
+                                if (item.isSentAPicture) {
+                                    FastImage(
+                                        imageUrl = R.drawable.ic_ladder_up_yellow,
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
 
-                                Text(
-                                    text = item.lastMessageText ?: "",
-                                    style = KilidTypography.h3,
-                                    color = if (isDarkTheme) Color.White else DescriptionTextColor,
-                                )
-                            }else{
-                                Text(
-                                    text = item.lastMessageText ?: "",
-                                    style = KilidTypography.h3,
-                                    color = if (isDarkTheme) Color.White else DescriptionTextColor,
-                                )
+                                    Text(
+                                        text = item.lastMessageText?.chunked(30) { it.trim() }
+                                            ?.joinToString("...") ?: "",
+                                        style = KilidTypography.h3,
+                                        color = if (isDarkTheme) Color.White else DescriptionTextColor,
+                                    )
+                                } else {
+                                    Text(
+                                        text = item.lastMessageText?.chunked(30) { it.trim() }
+                                            ?.joinToString("...") ?: "",
+                                        style = KilidTypography.h3,
+                                        color = if (isDarkTheme) Color.White else DescriptionTextColor,
+                                    )
+                                }
                             }
-                            }
 
-                    }
-
+                        }
 
 
                     }
@@ -222,51 +232,55 @@ fun PlpItem(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
 
                 ) {
-                    Row (
+                    Row(
 
-                    ){
-                        if (item.isUnreadMessage){
-                            Icon(painter = painterResource(id = R.drawable.markread),
-                                contentDescription =null,
+                    ) {
+                        if (item.isUnreadMessage) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.markread),
+                                contentDescription = null,
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
                                     .size(12.dp), tint = LockIconColor
 
                             )
-                        }else{
+                        } else {
 //                            mark read icon add
                         }
 
 
 
-                   Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = item.lastMessageDate.toString(),
-                        color = DescriptionTextColor,
-                        style = KilidTypography.h3
-                    )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = item.lastMessageDate.toString(),
+                            color = DescriptionTextColor,
+                            style = KilidTypography.h3
+                        )
 
                     }
 
 
-                      when(item.isItemPinned){
+                    when (item.isItemPinned) {
                         IsItemPinnedStatus.NONE -> {
                             null
                         }
+
                         IsItemPinnedStatus.ITEMPINNED -> {
-                            Icon(painter = painterResource(id = R.drawable.pinicon),
-                                contentDescription =null,
+                            Icon(
+                                painter = painterResource(id = R.drawable.pinicon),
+                                contentDescription = null,
                                 modifier = Modifier
                                     .size(23.dp)
-                                    .clip(shape = CircleShape))
+                                    .clip(shape = CircleShape)
+                            )
                         }
+
                         IsItemPinnedStatus.MESSAGENUMBER -> {
                             Box(
                                 modifier = Modifier
                                     .clip(shape = RoundedCornerShape(12.dp))
                                     .background(color = TelegrampinkColor)
-                                    .size(height = 23.dp, width = 31.dp)
-                                ,
+                                    .size(height = 23.dp, width = 31.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -279,16 +293,8 @@ fun PlpItem(
                             }
 
 
-
-
                         }
                     }
-
-
-
-
-                        }
-
 
 
                 }
@@ -298,7 +304,10 @@ fun PlpItem(
 
 
         }
-        Spacer(modifier = Modifier.height(11.dp))
+
+
+    }
+    Spacer(modifier = Modifier.height(11.dp))
 //        Divider(
 //            modifier = Modifier
 //                .fillMaxWidth()
@@ -306,7 +315,7 @@ fun PlpItem(
 //        )
 
 
-    }
+}
 
 
 

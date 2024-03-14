@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
                     navController = navController,
                     settingsDataStore = settingsDataStore,
                     plpviewModel = plpViewModel,
-                    onNavigateToRecipeDetailScreen = { },
+                    onNavigateToRecipeDetailScreen = { navController.navigate(HomeScreensNavigation.SingleChatScreen.route) },
                     isDarkTheme = false,
                     onToggleTheme = { },
 

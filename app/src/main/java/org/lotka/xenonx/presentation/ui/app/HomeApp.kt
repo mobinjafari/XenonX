@@ -21,11 +21,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import org.lotka.xenonx.presentation.ui.app.HomeActivity
 import org.lotka.xenonx.presentation.ui.app.MainViewModel
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
-import org.lotka.xenonx.presentation.ui.screens.chats.home.HomeChatScreen
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreen
 
 
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
+import org.lotka.xenonx.presentation.ui.screens.plp.SingleChatScreen.SingleChatScreen
+
 import org.lotka.xenonx.util.SettingsDataStore
 
 
@@ -78,6 +79,22 @@ fun HomeApp(
 
                     )
                 }
+                composable(
+                    route = HomeScreensNavigation.SingleChatScreen.route,
+                ) {
+                    SingleChatScreen(
+                      onBackPressed = { navController.popBackStack() },
+                        isDarkMode = isDarkTheme,
+                        onToggleTheme = onToggleTheme,
+                        viewModel = plpviewModel,
+                        navController = navController,
+
+
+
+
+                    )
+                }
+
 
 
 
