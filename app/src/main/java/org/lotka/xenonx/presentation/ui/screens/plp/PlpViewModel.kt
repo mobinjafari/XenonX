@@ -1,10 +1,12 @@
 package org.lotka.xenonx.presentation.ui.screens.plp
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import org.lotka.xenonx.domain.enums.FilterTypes
@@ -59,6 +61,20 @@ class PlpViewModel @Inject constructor(
     var filterStateVersion by mutableIntStateOf(0)
 
     val inChatProsess = mutableStateOf(false)
+
+    private val _textState: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue())
+
+    // Exposed immutable state for observing
+    val textState: MutableState<TextFieldValue>
+        get() = _textState
+
+    // Function to handle value change in TextField
+    fun onValueChanged(newValue: TextFieldValue) {
+        _textState.value = newValue
+        // Additional logic can be added here if needed
+    }
+
+
 
 
 

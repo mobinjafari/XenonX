@@ -2,6 +2,7 @@ package org.lotka.xenonx.presentation.ui.screens.plp.SingleChatScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.text.BasicTextField
 
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 
 
 import androidx.compose.runtime.Composable
@@ -26,10 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.lotka.xenonx.R
+import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 
 @Composable
 fun SingleChatBottomBar(
-
+   viewModel: PlpViewModel
 ) {
 
     Row (modifier = Modifier
@@ -51,7 +54,24 @@ fun SingleChatBottomBar(
         Spacer(   modifier = Modifier.width(4.dp))
 
 //        in there we need TextField not text I use just for Test
-            Text(text = "Message ", fontSize = 18.sp)
+         TextField(
+             modifier = Modifier.width(230.dp)
+
+             ,   value = viewModel.textState.value,
+             onValueChange = { newValue ->
+                 viewModel.onValueChanged(newValue)
+             },
+
+             label = {
+                 Box (modifier = Modifier.fillMaxWidth()
+                 , contentAlignment = Alignment.CenterEnd
+                 ){
+                 Text(text = "Message ", fontSize = 18.sp,
+                     )
+
+                 }
+             }
+             )
 
         Spacer(   modifier = Modifier.weight(3f))
         Icon(

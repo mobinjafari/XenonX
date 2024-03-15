@@ -3,6 +3,7 @@ package org.lotka.xenonx.domain.model.model.plp
 
 import androidx.annotation.Keep
 import org.lotka.xenonx.domain.enums.IsItemPinnedStatus
+import org.lotka.xenonx.domain.enums.IsOnlineStatus
 import org.lotka.xenonx.domain.enums.UserVerificationStatus
 
 @Keep
@@ -14,7 +15,7 @@ data class PlpItemResultModel(
     var lastMessageText : String?,
     var lastMessageDate : String?,
     var numUnreadMessage: Int?,
-
+    var isOnline : IsOnlineStatus = IsOnlineStatus.OFFLINE,
     var lastTypingDate: String?,
     var isPremiumUser: Boolean?,
     var lastMessageType : String?,

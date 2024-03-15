@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import org.lotka.xenonx.R
+import org.lotka.xenonx.domain.enums.IsOnlineStatus
 import org.lotka.xenonx.presentation.composables.FastImage
 import org.lotka.xenonx.presentation.theme.KilidTypography
 import org.lotka.xenonx.presentation.theme.OnlineTextColor
@@ -39,7 +40,7 @@ fun SingleChatTopBar(
     onToggleTheme: () -> Unit,
     isDarkMode: Boolean = false,
     viewModel: PlpViewModel,
-    isOnline : Boolean = true
+    isOnline : IsOnlineStatus = IsOnlineStatus.ISTYPING
 ) {
     TopAppBar(
         title = {
@@ -78,22 +79,49 @@ fun SingleChatTopBar(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Center
                 ) {
+                    Text(text = "jahari",
+                        style = KilidTypography.h5,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                   when(isOnline){
+                       IsOnlineStatus.OFFLINE -> {
+                            null
+                       }
+                       IsOnlineStatus.ONLINE -> {
 
-                    if (isOnline){
+                           Text(text = "online",
+                               style = KilidTypography.h3,
+                               color = OnlineTextColor)
 
-                        Text(text = "jahari",
-                            style = KilidTypography.h5,
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "online",
-                            style = KilidTypography.h3,
-                            color = OnlineTextColor)
+                       }
+                       IsOnlineStatus.LASTSEENRECENTLY -> {
 
-                    }else{
-                        Text(text = "jahari",
-                            style = KilidTypography.h5,
-                        )
-                    }
+
+                           Text(text = "last seen recently",
+                               style = KilidTypography.h3,
+                               color = OnlineTextColor)
+                       }
+                       IsOnlineStatus.WAITINGFORNETWORK -> {
+
+                           Text(text = "waiting for network",
+                               style = KilidTypography.h3,
+                               color = OnlineTextColor)
+                       }
+
+                       IsOnlineStatus.ISTYPING -> {
+                           Text(text = "...typing",
+                               style = KilidTypography.h3,
+                               color = OnlineTextColor)
+
+                       }
+
+                       IsOnlineStatus.ICONNECTING -> {
+
+                           Text(text = "...connecting",
+                               style = KilidTypography.h3,
+                               color = OnlineTextColor)
+                       }
+                   }
 
                 }
                 Icon(

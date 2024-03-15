@@ -69,7 +69,7 @@ fun SingleChatScreen(
 
             )
         }, bottomBar = {
-            SingleChatBottomBar()
+            SingleChatBottomBar(viewModel)
         },
 
 
