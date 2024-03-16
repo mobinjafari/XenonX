@@ -1,18 +1,18 @@
 package org.lotka.xenonx.presentation.ui.screens.plp.SingleChatScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+
+import androidx.compose.foundation.layout.wrapContentHeight
+
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
+
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -50,7 +50,7 @@ fun SingleChatScreen(
     viewModel: PlpViewModel,
     navController: NavController
 ) {
-
+    val messages by viewModel.messages.collectAsState()
 
     Scaffold(
         modifier = Modifier
@@ -66,34 +66,53 @@ fun SingleChatScreen(
                 onBackPressed = onBackPressed,
                 isDarkMode = isDarkMode,
                 viewModel = viewModel
-
             )
-        }, bottomBar = {
+        },
+        bottomBar = {
             SingleChatBottomBar(viewModel)
         },
-
-
-        drawerElevation = 0.dp,
-        drawerGesturesEnabled = false,
-        drawerContentColor = Color.White,
-        drawerScrimColor = Color.White,
-
-
+//        drawerElevation = 0.dp,
+//        drawerGesturesEnabled = false,
+//        drawerContentColor = Color.White,
+//        drawerScrimColor = Color.White,
         content = { PadingValue ->
-            LazyColumn(modifier = Modifier
-                .padding(PadingValue)
-                .fillMaxSize()
-
+            LazyColumn(
+                modifier = Modifier
+                    .padding(PadingValue)
+                    .fillMaxSize()
             ) {
-                item {
-                    Text(
-                        text = "", fontSize = 18.sp,
-                        modifier = Modifier
-                            .fillMaxSize()
+                items(messages.indices.toList()) { index ->
+                    val message = viewModel.getMessageText(index)
+                    message?.let {
+                        Card(
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .wrapContentHeight()
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
+                                .background(
+                                    color = TelegramBackGround,
+                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
+                                ),
+                            backgroundColor = TelegramBackGround,
+                            elevation = 1.dp
 
-                    )
+
+                        ) {
+                            Text (
+                                text = it,
+                                fontSize = 18.sp,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .padding(8.dp)
+
+                            )
+                                }
+
+
+
+                    }
                 }
             }
-
-        })
+        }
+    )
 }

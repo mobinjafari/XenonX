@@ -9,11 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.BasicTextField
 
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 
 
 import androidx.compose.runtime.Composable
@@ -34,6 +35,7 @@ import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 fun SingleChatBottomBar(
    viewModel: PlpViewModel
 ) {
+    var messageText by remember { mutableStateOf("") }
 
     Row (modifier = Modifier
         .fillMaxWidth()
@@ -57,9 +59,8 @@ fun SingleChatBottomBar(
          TextField(
              modifier = Modifier.width(230.dp)
 
-             ,   value = viewModel.textState.value,
-             onValueChange = { newValue ->
-                 viewModel.onValueChanged(newValue)
+             ,   value = messageText,
+             onValueChange = { messageText = it
              },
 
              label = {
@@ -70,8 +71,24 @@ fun SingleChatBottomBar(
                      )
 
                  }
+             },
+             leadingIcon = {
+                 Icon(
+                     Icons.Filled.Send,
+                     contentDescription = "Back",
+                     modifier = Modifier
+                         .clickable {
+                             if (messageText.isNotBlank()) {
+                                 viewModel.sendMessage(messageText)
+                                 messageText = ""
+                             }
+                         }
+                         .size(27.dp)
+                 )
              }
              )
+
+
 
         Spacer(   modifier = Modifier.weight(3f))
         Icon(

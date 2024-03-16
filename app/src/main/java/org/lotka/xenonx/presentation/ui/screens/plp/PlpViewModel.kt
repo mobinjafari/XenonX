@@ -51,6 +51,7 @@ class PlpViewModel @Inject constructor(
     val updateUseCase: GetUpdateUseCase
 ) : BaseViewModel(dispatchers) {
 
+
      var item: PlpItemResultModel? = null
 
     val filterManager = FilterManager()
@@ -62,20 +63,20 @@ class PlpViewModel @Inject constructor(
 
     val inChatProsess = mutableStateOf(false)
 
-    private val _textState: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue())
+    private val _messages: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
 
     // Exposed immutable state for observing
-    val textState: MutableState<TextFieldValue>
-        get() = _textState
+    val messages = _messages.asStateFlow()
 
-    // Function to handle value change in TextField
-    fun onValueChanged(newValue: TextFieldValue) {
-        _textState.value = newValue
-        // Additional logic can be added here if needed
+    // Function to send a message
+    fun sendMessage(message: String) {
+        // Append the new message to the existing list of messages
+        _messages.value += message
     }
 
-
-
+    fun getMessageText(index: Int): String? {
+        return messages.value.getOrNull(index)
+    }
 
 
     private var initialFilterState: String = ""
