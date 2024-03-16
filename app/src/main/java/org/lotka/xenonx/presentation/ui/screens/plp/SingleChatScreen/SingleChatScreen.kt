@@ -94,6 +94,7 @@ fun SingleChatScreen(
                                     shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
                                 ),
                             backgroundColor = TelegramBackGround,
+                            contentColor = TelegramBackGround,
                             elevation = 1.dp
 
 
