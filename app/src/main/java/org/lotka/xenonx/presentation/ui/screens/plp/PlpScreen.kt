@@ -66,6 +66,9 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import org.lotka.xenonx.R
 import org.lotka.xenonx.presentation.composables.etc.MobinButton
 import org.lotka.xenonx.presentation.composables.etc.general.LottieLoading
@@ -89,7 +92,9 @@ import org.lotka.xenonx.presentation.ui.screens.plp.compose.PlpItem
 import org.lotka.xenonx.presentation.ui.screens.plp.compose.PlpFilterPart
 import org.lotka.xenonx.presentation.util.UIState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.lotka.xenonx.presentation.theme.TelegramBackGround
 import org.lotka.xenonx.presentation.ui.screens.plp.compose.HomeTabRow
 import timber.log.Timber
@@ -111,6 +116,8 @@ fun PlpScreen(
     onToggleTheme: () -> Unit,
 
 ) {
+
+
 
     var canPop by remember { mutableStateOf(false) }
     val page = viewModel.page.value

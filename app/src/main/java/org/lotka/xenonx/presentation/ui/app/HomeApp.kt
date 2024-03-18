@@ -5,10 +5,13 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +29,7 @@ import org.lotka.xenonx.presentation.ui.screens.plp.PlpScreen
 
 import org.lotka.xenonx.presentation.ui.screens.plp.PlpViewModel
 import org.lotka.xenonx.presentation.ui.screens.plp.SingleChatScreen.SingleChatScreen
+
 
 import org.lotka.xenonx.util.SettingsDataStore
 
@@ -82,6 +86,9 @@ fun HomeApp(
                 composable(
                     route = HomeScreensNavigation.SingleChatScreen.route,
                 ) {
+
+
+
                     SingleChatScreen(
                       onBackPressed = { navController.popBackStack() },
                         isDarkMode = isDarkTheme,

@@ -5,13 +5,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import com.google.firebase.Firebase
-import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.google.gson.Gson
@@ -25,12 +22,11 @@ import org.lotka.xenonx.presentation.util.DispatchersProviderImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
+
 import javax.inject.Singleton
 
 
@@ -42,6 +38,7 @@ object AppModule {
 //  @Singleton
 //  fun FirebaseAuth(): FirebaseAuth = Firebase.auth
 //
+
 
 
     @Provides

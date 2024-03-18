@@ -79,7 +79,9 @@ fun SingleChatScreen(
             LazyColumn(
                 modifier = Modifier
                     .padding(PadingValue)
-                    .fillMaxSize()
+
+                    .fillMaxSize(),
+                reverseLayout = true
             ) {
                 items(messages.indices.toList()) { index ->
                     val message = viewModel.getMessageText(index)
